@@ -8,34 +8,17 @@ const transferOptions = [
   {
     icon: Plane,
     title: "By Air",
-    description: "Private jet and helicopter transfers available from major international airports. Our aviation concierge will arrange seamless travel tailored to your schedule.",
+    description: "Our concierge will arrange seamless travel tailored to your schedule from major international airports.",
     details: [
-      "Private jet charter from any global destination",
-      "Helicopter transfers from nearby airports",
-      "VIP airport meet and greet service",
-      "Customs and immigration assistance",
+     
     ],
   },
   {
     icon: Car,
     title: "By Road",
-    description: "Luxury vehicle transfers with professional chauffeurs. Enjoy scenic routes through breathtaking landscapes in ultimate comfort.",
+    description: "vehicle transfers with professional drivers. Enjoy scenic routes through breathtaking landscapes in ultimate comfort.",
     details: [
-      "Mercedes-Maybach fleet available",
-      "Experienced multilingual chauffeurs",
-      "Refreshments and amenities on board",
-      "Flexible pickup locations",
-    ],
-  },
-  {
-    icon: Ship,
-    title: "By Sea",
-    description: "For coastal destinations, arrive in style aboard our private yacht or arrange transfers from nearby marinas.",
-    details: [
-      "Private yacht charter available",
-      "Speedboat transfers for island locations",
-      "Scenic coastal cruises",
-      "Sunset arrival experiences",
+
     ],
   },
 ];
@@ -133,7 +116,7 @@ const GettingHere = () => {
                 <div className="space-y-6">
                   <div>
                     <span className="luxury-subheading text-muted-foreground block mb-1">Address</span>
-                    <span className="font-serif">Private Estate, Wilderness Reserve<br />Remote Location, Country</span>
+                    <span className="font-serif">Kandalama<br />Dambulla</span>
                   </div>
                   <div>
                     <span className="luxury-subheading text-muted-foreground block mb-1">Coordinates</span>
