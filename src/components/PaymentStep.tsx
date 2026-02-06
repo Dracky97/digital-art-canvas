@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { Button } from "@/components/ui/button";
-import { Building2, Lock, Check, ChevronLeft, Copy } from "lucide-react";
+import { CreditCard, Lock, Check, ChevronLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
 
 interface PaymentStepProps {
   totalPrice: number;
@@ -12,15 +12,6 @@ interface PaymentStepProps {
   setIsProcessing: (value: boolean) => void;
 }
 
-const bankDetails = {
-  bankName: "First National Bank",
-  accountName: "Luxury Retreats Ltd",
-  accountNumber: "1234567890",
-  routingNumber: "021000021",
-  swiftCode: "FNBKUS33",
-  reference: "BOOK-" + Math.random().toString(36).substring(2, 8).toUpperCase(),
-};
-
 const PaymentStep = ({ 
   totalPrice, 
   onSuccess, 
@@ -28,30 +19,43 @@ const PaymentStep = ({
   isProcessing,
   setIsProcessing 
 }: PaymentStepProps) => {
-  const [confirmed, setConfirmed] = useState(false);
-  const { toast } = useToast();
+  const stripe = useStripe();
+  const elements = useElements();
+  const [error, setError] = useState<string | null>(null);
 
-  const copyToClipboard = (text: string, label: string) => {
-    navigator.clipboard.writeText(text);
-    toast({
-      title: "Copied!",
-      description: `${label} copied to clipboard`,
-    });
-  };
-
-  const handleConfirmPayment = async () => {
-    if (!confirmed) {
-      toast({
-        title: "Please confirm",
-        description: "Please confirm that you have initiated the bank transfer",
-        variant: "destructive",
-      });
+  const handlePayment = async () => {
+    if (!stripe || !elements) {
+      setError("Stripe hasn't loaded yet. Please try again.");
       return;
     }
 
     setIsProcessing(true);
+    setError(null);
+
+    const cardElement = elements.getElement(CardElement);
     
-    // Simulate processing delay
+    if (!cardElement) {
+      setError("Card element not found");
+      setIsProcessing(false);
+      return;
+    }
+
+    // Create a payment method (in production, you'd send this to your backend)
+    const { error: stripeError, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+    });
+
+    if (stripeError) {
+      setError(stripeError.message || "Payment failed");
+      setIsProcessing(false);
+      return;
+    }
+
+    // Simulate successful payment (in production, confirm with backend)
+    console.log("Payment method created:", paymentMethod.id);
+    
+    // Simulate a delay for processing
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     setIsProcessing(false);
@@ -63,70 +67,53 @@ const PaymentStep = ({
       <div className="bg-muted/30 rounded-lg p-6">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-full bg-foreground/10 flex items-center justify-center">
-            <Building2 className="w-5 h-5" />
+            <CreditCard className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-serif text-lg">Bank Transfer Details</h3>
-            <p className="text-sm text-muted-foreground">Complete your payment via bank transfer</p>
+            <h3 className="font-serif text-lg">Payment Details</h3>
+            <p className="text-sm text-muted-foreground">Secure payment powered by Stripe</p>
           </div>
         </div>
 
         <div className="space-y-4">
-          {[
-            { label: "Bank Name", value: bankDetails.bankName },
-            { label: "Account Name", value: bankDetails.accountName },
-            { label: "Account Number", value: bankDetails.accountNumber },
-            { label: "Routing Number", value: bankDetails.routingNumber },
-            { label: "SWIFT Code", value: bankDetails.swiftCode },
-            { label: "Payment Reference", value: bankDetails.reference },
-          ].map((item) => (
-            <div
-              key={item.label}
-              className="flex items-center justify-between p-3 border border-border rounded-lg bg-background"
-            >
-              <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">{item.label}</p>
-                <p className="font-medium">{item.value}</p>
-              </div>
-              <button
-                onClick={() => copyToClipboard(item.value, item.label)}
-                className="p-2 hover:bg-muted rounded-md transition-colors"
-                title={`Copy ${item.label}`}
-              >
-                <Copy className="w-4 h-4 text-muted-foreground" />
-              </button>
-            </div>
-          ))}
+          <div className="p-4 border border-border rounded-lg bg-background">
+            <CardElement
+              options={{
+                style: {
+                  base: {
+                    fontSize: '16px',
+                    color: 'hsl(var(--foreground))',
+                    '::placeholder': {
+                      color: 'hsl(var(--muted-foreground))',
+                    },
+                    iconColor: 'hsl(var(--foreground))',
+                  },
+                  invalid: {
+                    color: 'hsl(var(--destructive))',
+                    iconColor: 'hsl(var(--destructive))',
+                  },
+                },
+                hidePostalCode: true,
+              }}
+            />
+          </div>
 
-          <div className="flex items-center gap-2 text-xs text-muted-foreground mt-4">
+          {error && (
+            <p className="text-sm text-destructive">{error}</p>
+          )}
+
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Lock className="w-3 h-3" />
-            <span>Please use the payment reference when making your transfer</span>
+            <span>Your payment information is encrypted and secure</span>
           </div>
         </div>
       </div>
 
       <div className="bg-muted/30 rounded-lg p-4">
         <div className="flex justify-between items-center">
-          <span className="text-muted-foreground">Amount to transfer</span>
+          <span className="text-muted-foreground">Total to pay</span>
           <span className="text-xl font-serif">${totalPrice.toLocaleString()}</span>
         </div>
-      </div>
-
-      <div className="flex items-start gap-3 p-4 border border-border rounded-lg">
-        <button
-          onClick={() => setConfirmed(!confirmed)}
-          className={cn(
-            "w-5 h-5 rounded border flex-shrink-0 flex items-center justify-center transition-colors",
-            confirmed
-              ? "bg-foreground border-foreground"
-              : "border-muted-foreground hover:border-foreground"
-          )}
-        >
-          {confirmed && <Check className="w-3 h-3 text-background" />}
-        </button>
-        <p className="text-sm text-muted-foreground">
-          I confirm that I have initiated the bank transfer with the correct reference number. I understand that my booking will be confirmed once the payment is received (typically 1-3 business days).
-        </p>
       </div>
 
       <div className="flex items-center justify-between pt-2">
@@ -136,8 +123,8 @@ const PaymentStep = ({
         </Button>
         
         <Button
-          onClick={handleConfirmPayment}
-          disabled={isProcessing}
+          onClick={handlePayment}
+          disabled={!stripe || isProcessing}
           className={cn(
             "gap-2 bg-foreground text-background hover:bg-foreground/90 min-w-[180px]",
             isProcessing && "opacity-70"
@@ -150,7 +137,7 @@ const PaymentStep = ({
             </>
           ) : (
             <>
-              Confirm Booking
+              Pay ${totalPrice.toLocaleString()}
               <Check className="w-4 h-4" />
             </>
           )}

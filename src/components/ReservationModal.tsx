@@ -14,6 +14,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+import { Elements } from "@stripe/react-stripe-js";
+import { stripePromise } from "@/lib/stripe";
 import PaymentStep from "@/components/PaymentStep";
 
 import indiaWilderness from "@/assets/india-wilderness.jpg";
@@ -484,13 +486,15 @@ const ReservationModal = ({ isOpen, onClose }: ReservationModalProps) => {
                 exit="exit"
                 transition={{ duration: 0.3 }}
               >
-                <PaymentStep
-                  totalPrice={totalPrice}
-                  onSuccess={handlePaymentSuccess}
-                  onBack={handleBack}
-                  isProcessing={isProcessing}
-                  setIsProcessing={setIsProcessing}
-                />
+                <Elements stripe={stripePromise}>
+                  <PaymentStep
+                    totalPrice={totalPrice}
+                    onSuccess={handlePaymentSuccess}
+                    onBack={handleBack}
+                    isProcessing={isProcessing}
+                    setIsProcessing={setIsProcessing}
+                  />
+                </Elements>
               </motion.div>
             )}
           </AnimatePresence>
