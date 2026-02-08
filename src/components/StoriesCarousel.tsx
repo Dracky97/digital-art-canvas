@@ -1,12 +1,10 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import amangiriDesert from "@/assets/amangiri-desert.jpg";
-import beachCasita from "@/assets/beach-casita.jpg";
-import skiMountains from "@/assets/ski-mountains.jpg";
-import tokyoInterior from "@/assets/tokyo-interior.jpg";
-import indiaWilderness from "@/assets/india-wilderness.jpg";
-import coastalPool from "@/assets/coastal-pool.jpg";
+import storiesWellness from "@/assets/stories-wellness.jpg";
+import storiesCultural from "@/assets/stories-cultural.jpg";
+import storiesNature from "@/assets/stories-nature.jpg";
+import storiesCoastal from "@/assets/stories-coastal.jpg";
 
 const stories = [
   {
@@ -14,28 +12,28 @@ const stories = [
     title: "Wellness & Spa",
     description:
       "Experience holistic rejuvenation at AaraWild's world-class wellness retreats.",
-    image: amangiriDesert,
+    image: storiesWellness,
   },
   {
     category: "Cultural",
     title: "Cultural Excursions",
     description:
       "Explore vibrant local cultures with curated experiences at AaraWild destinations.",
-    image: beachCasita,
+    image: storiesCultural,
   },
   {
     category: "Nature",
     title: "Nature Trails",
     description:
       "Discover breathtaking landscapes and diverse wildlife on guided nature trails.",
-    image: skiMountains,
+    image: storiesNature,
   },
   {
     category: "Coastal",
     title: "At Water's Edge",
     description:
       "Across the AaraWild globe, oceanfront retreats offer the balm of sun, sea and sand.",
-    image: coastalPool,
+    image: storiesCoastal,
   },
 ];
 
