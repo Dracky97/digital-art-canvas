@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Elements } from "@stripe/react-stripe-js";
 import { stripePromise } from "@/lib/stripe";
 import PaymentStep from "@/components/PaymentStep";
+import { saveReservation } from "@/lib/reservations";
 
 import indiaWilderness from "@/assets/india-wilderness.jpg";
 import skiMountains from "@/assets/ski-mountains.jpg";
@@ -94,6 +95,26 @@ const ReservationModal = ({ isOpen, onClose }: ReservationModalProps) => {
     const selectedRoomData = rooms.find(r => r.id === selectedRoom);
     const nights = checkIn && checkOut ? Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)) : 0;
     const formData = form.getValues();
+    
+    // Save reservation to localStorage
+    if (selectedRoomData && checkIn && checkOut) {
+      saveReservation({
+        roomId: selectedRoomData.id,
+        roomName: selectedRoomData.name,
+        checkIn: checkIn.toISOString(),
+        checkOut: checkOut.toISOString(),
+        guests,
+        guestInfo: {
+          firstName: formData.firstName || '',
+          lastName: formData.lastName || '',
+          email: formData.email || '',
+          phone: formData.phone || '',
+          specialRequests: formData.specialRequests,
+        },
+        totalPrice,
+        nights,
+      });
+    }
     
     toast({
       title: "Payment Successful!",
