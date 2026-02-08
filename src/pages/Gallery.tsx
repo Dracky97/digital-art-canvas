@@ -1,24 +1,26 @@
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import galleryArchitecture from "@/assets/gallery-architecture.jpg";
 import beachCasita from "@/assets/beach-casita.jpg";
-import coastalPool from "@/assets/coastal-pool.jpg";
-import indiaWilderness from "@/assets/india-wilderness.jpg";
+import galleryWellness from "@/assets/gallery-wellness.jpg";
+import galleryExperiences from "@/assets/gallery-experiences.jpg";
 import skiMountains from "@/assets/ski-mountains.jpg";
-import tokyoInterior from "@/assets/tokyo-interior.jpg";
+import galleryInteriors from "@/assets/gallery-interiors.jpg";
 import amangiriDesert from "@/assets/amangiri-desert.jpg";
-import heroReflectionPool from "@/assets/hero-reflection-pool.jpg";
+import galleryDining from "@/assets/gallery-dining.jpg";
+import indiaWilderness from "@/assets/india-wilderness.jpg";
 
 const galleryImages = [
-  { src: heroReflectionPool, alt: "Reflection pool at sunset", category: "Architecture" },
+  { src: galleryArchitecture, alt: "Resort architecture at sunset", category: "Architecture" },
   { src: beachCasita, alt: "Beachfront casita", category: "Accommodation" },
-  { src: coastalPool, alt: "Infinity pool overlooking ocean", category: "Wellness" },
-  { src: indiaWilderness, alt: "Indian wilderness safari", category: "Experiences" },
+  { src: galleryWellness, alt: "Spa treatment room", category: "Wellness" },
+  { src: galleryExperiences, alt: "Hot air balloon safari", category: "Experiences" },
   { src: skiMountains, alt: "Mountain ski resort", category: "Destinations" },
-  { src: tokyoInterior, alt: "Tokyo luxury suite", category: "Interiors" },
+  { src: galleryInteriors, alt: "Luxury bedroom interior", category: "Interiors" },
   { src: amangiriDesert, alt: "Desert landscape", category: "Destinations" },
-  { src: beachCasita, alt: "Ocean view terrace", category: "Dining" },
-  { src: coastalPool, alt: "Spa retreat", category: "Wellness" },
+  { src: galleryDining, alt: "Oceanfront dining experience", category: "Dining" },
+  { src: indiaWilderness, alt: "Wilderness retreat", category: "Experiences" },
 ];
 
 const categories = ["All", "Architecture", "Accommodation", "Wellness", "Experiences", "Destinations", "Interiors", "Dining"];

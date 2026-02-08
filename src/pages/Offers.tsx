@@ -1,16 +1,14 @@
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import beachCasita from "@/assets/beach-casita.jpg";
-import skiMountains from "@/assets/ski-mountains.jpg";
-import coastalPool from "@/assets/coastal-pool.jpg";
+import offerExtendedStay from "@/assets/offer-extended-stay.jpg";
 
 const offers = [
   {
     title: "Extended Stay Retreat",
     subtitle: "Stay 5 nights, pay for 4",
     description: "Extend your sanctuary escape with complimentary nights and exclusive amenities including daily spa credits and private dining experiences.",
-    image: beachCasita,
+    image: offerExtendedStay,
     validUntil: "March 31, 2025",
     terms: "Subject to availability. Blackout dates apply.",
   },

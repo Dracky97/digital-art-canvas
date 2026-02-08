@@ -3,41 +3,41 @@ import { useState, useCallback, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import skiMountains from "@/assets/ski-mountains.jpg";
-import tokyoInterior from "@/assets/tokyo-interior.jpg";
-import beachCasita from "@/assets/beach-casita.jpg";
-import indiaWilderness from "@/assets/india-wilderness.jpg";
-import coastalPool from "@/assets/coastal-pool.jpg";
+import roomMudHouse from "@/assets/room-mud-house.jpg";
+import roomTreehouse from "@/assets/room-treehouse.jpg";
+import roomGlamping from "@/assets/room-glamping.jpg";
+import roomLuxurySuite from "@/assets/room-luxury-suite.jpg";
+import roomFamilySuite from "@/assets/room-family-suite.jpg";
 
 const rooms = [
   {
     name: "Mud House",
     tagline: "Earth & Soul",
-    image: indiaWilderness,
+    image: roomMudHouse,
     description: "Handcrafted dwellings blending ancient traditions with modern comfort",
   },
   {
     name: "Tree House",
     tagline: "Above the Canopy",
-    image: skiMountains,
+    image: roomTreehouse,
     description: "Elevated sanctuaries nestled among ancient trees",
   },
   {
     name: "Luxury Glamping",
     tagline: "Wild Elegance",
-    image: beachCasita,
+    image: roomGlamping,
     description: "Canvas and comfort unite under starlit skies",
   },
   {
     name: "Luxury Suite",
     tagline: "Refined Retreat",
-    image: tokyoInterior,
+    image: roomLuxurySuite,
     description: "Sophisticated spaces with panoramic wilderness views",
   },
   {
     name: "Family Suite",
     tagline: "Together in Nature",
-    image: coastalPool,
+    image: roomFamilySuite,
     description: "Spacious havens designed for shared adventures",
   },
 ];
