@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import heroImage from "@/assets/video-thumbnail.jpg";
+import heroVideo from "@/assets/hero-video.mp4";
 
 const HeroVideo = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -14,14 +14,17 @@ const HeroVideo = () => {
 
   return (
     <section ref={sectionRef} className="relative h-screen w-full overflow-hidden">
-      {/* Background Image with Parallax */}
+      {/* Background Video with Parallax */}
       <motion.div
         className="absolute inset-0"
         style={{ y, scale }}
       >
-        <img
-          src={heroImage}
-          alt="AaraWild at Sea"
+        <video
+          src={heroVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
           className="w-full h-full object-cover"
         />
         <div className="video-overlay absolute inset-0" />
