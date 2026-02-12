@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format, addDays } from "date-fns";
 import { Calendar, Users, Home, User, X, ChevronRight, ChevronLeft, Check } from "lucide-react";
@@ -29,6 +29,7 @@ import coastalPool from "@/assets/coastal-pool.jpg";
 interface ReservationModalProps {
   isOpen: boolean;
   onClose: () => void;
+  preSelectedRoom?: string;
 }
 
 const roomImages: Record<string, string> = {
@@ -54,15 +55,32 @@ const guestFormSchema = z.object({
 
 type GuestFormData = z.infer<typeof guestFormSchema>;
 
-const ReservationModal = ({ isOpen, onClose }: ReservationModalProps) => {
+const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModalProps) => {
   const rooms = getRooms();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(preSelectedRoom ? 1 : 1);
   const [checkIn, setCheckIn] = useState<Date>();
   const [checkOut, setCheckOut] = useState<Date>();
   const [guests, setGuests] = useState({ adults: 2, children: 0 });
-  const [selectedRoom, setSelectedRoom] = useState<string>();
+  const [selectedRoom, setSelectedRoom] = useState<string | undefined>(preSelectedRoom);
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
+
+  // Sync preSelectedRoom when modal opens
+  const handleClose = () => {
+    setStep(1);
+    setCheckIn(undefined);
+    setCheckOut(undefined);
+    setSelectedRoom(undefined);
+    setGuests({ adults: 2, children: 0 });
+    form.reset();
+    onClose();
+  };
+
+  useEffect(() => {
+    if (isOpen && preSelectedRoom) {
+      setSelectedRoom(preSelectedRoom);
+    }
+  }, [isOpen, preSelectedRoom]);
 
   const form = useForm<GuestFormData>({
     resolver: zodResolver(guestFormSchema),
@@ -129,12 +147,7 @@ const ReservationModal = ({ isOpen, onClose }: ReservationModalProps) => {
     });
     
     // Reset and close
-    setStep(1);
-    setCheckIn(undefined);
-    setCheckOut(undefined);
-    setSelectedRoom(undefined);
-    form.reset();
-    onClose();
+    handleClose();
   };
 
   const selectedRoomData = rooms.find(r => r.id === selectedRoom);
@@ -159,7 +172,7 @@ const ReservationModal = ({ isOpen, onClose }: ReservationModalProps) => {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl p-0 gap-0 overflow-hidden bg-background border-none">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-border">
@@ -167,7 +180,7 @@ const ReservationModal = ({ isOpen, onClose }: ReservationModalProps) => {
             <p className="text-xs tracking-[0.2em] text-muted-foreground mb-1">STEP {step} OF 5</p>
             <h2 className="text-xl font-serif tracking-luxury">{getStepTitle()}</h2>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-muted rounded-full transition-colors">
+          <button onClick={handleClose} className="p-2 hover:bg-muted rounded-full transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
