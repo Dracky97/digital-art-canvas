@@ -18,6 +18,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { stripePromise } from "@/lib/stripe";
 import PaymentStep from "@/components/PaymentStep";
 import { saveReservation } from "@/lib/reservations";
+import { getRoomPrices } from "@/lib/roomPricing";
 
 import indiaWilderness from "@/assets/india-wilderness.jpg";
 import skiMountains from "@/assets/ski-mountains.jpg";
@@ -30,13 +31,18 @@ interface ReservationModalProps {
   onClose: () => void;
 }
 
-const rooms = [
-  { id: "mud-house", name: "Mud House", price: 450, image: indiaWilderness },
-  { id: "tree-house", name: "Tree House", price: 550, image: skiMountains },
-  { id: "glamping", name: "Luxury Glamping", price: 350, image: beachCasita },
-  { id: "luxury-suite", name: "Luxury Suite", price: 750, image: tokyoInterior },
-  { id: "family-suite", name: "Family Suite", price: 650, image: coastalPool },
-];
+const roomImages: Record<string, string> = {
+  "mud-house": indiaWilderness,
+  "tree-house": skiMountains,
+  "glamping": beachCasita,
+  "luxury-suite": tokyoInterior,
+  "family-suite": coastalPool,
+};
+
+const getRooms = () => {
+  const prices = getRoomPrices();
+  return prices.map(r => ({ ...r, image: roomImages[r.id] || indiaWilderness }));
+};
 
 const guestFormSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -49,6 +55,7 @@ const guestFormSchema = z.object({
 type GuestFormData = z.infer<typeof guestFormSchema>;
 
 const ReservationModal = ({ isOpen, onClose }: ReservationModalProps) => {
+  const rooms = getRooms();
   const [step, setStep] = useState(1);
   const [checkIn, setCheckIn] = useState<Date>();
   const [checkOut, setCheckOut] = useState<Date>();
