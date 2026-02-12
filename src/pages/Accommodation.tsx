@@ -9,6 +9,7 @@ import coastalPool from "@/assets/coastal-pool.jpg";
 
 const accommodations = [
   {
+    roomId: "mud-house",
     name: "Mud House",
     description: "Rustic yet refined villas crafted from natural materials, seamlessly blending into the surrounding landscape.",
     image: beachCasita,
@@ -17,6 +18,7 @@ const accommodations = [
     features: ["Paddyfield View", "1 King-Size Bed", "2 Deluxe Beds", "Bathtub"],
   },
   {
+    roomId: "tree-house",
     name: "Tree House",
     description: "Elevated sanctuaries nestled among the treetops, offering panoramic views and a unique connection to nature.",
     image: tokyoInterior,
@@ -25,6 +27,7 @@ const accommodations = [
     features: ["Forest View", "Jacuzzi Tub", "2 King-Size Beds"],
   },
   {
+    roomId: "glamping",
     name: "Luxury Glamping",
     description: "Opulent tents set in breathtaking locations, combining the adventure of camping with the comforts of a five-star hotel.",
     image: coastalPool,
@@ -33,6 +36,7 @@ const accommodations = [
     features: ["1 King-Size Bed", "2 Deluxe Beds", "Indoor & Indoor Bathrooms"],
   },
   {
+    roomId: "luxury-suite",
     name: "Luxury Suite",
     description: "The pinnacle of luxury living, featuring a private spa, and panoramic views of the landscape.",
     image: coastalPool,
@@ -41,6 +45,7 @@ const accommodations = [
     features: ["2 Beds", "Private Pool"],
   },
   {
+    roomId: "family-suite",
     name: "Family Suite",
     description: "The pinnacle of luxury living, featuring a private spa, and panoramic views of the landscape.",
     image: coastalPool,
@@ -52,6 +57,17 @@ const accommodations = [
 
 const Accommodation = () => {
   const [isReservationOpen, setIsReservationOpen] = useState(false);
+  const [preSelectedRoom, setPreSelectedRoom] = useState<string | undefined>();
+
+  const handleReserve = (roomId: string) => {
+    setPreSelectedRoom(roomId);
+    setIsReservationOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsReservationOpen(false);
+    setPreSelectedRoom(undefined);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -126,7 +142,7 @@ const Accommodation = () => {
                     ))}
                   </div>
                   <button
-                    onClick={() => setIsReservationOpen(true)}
+                    onClick={() => handleReserve(accommodation.roomId)}
                     className="luxury-subheading px-8 py-4 border border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
                   >
                     Reserve Now
@@ -138,7 +154,7 @@ const Accommodation = () => {
         </section>
       </main>
       <Footer />
-      <ReservationModal isOpen={isReservationOpen} onClose={() => setIsReservationOpen(false)} />
+      <ReservationModal isOpen={isReservationOpen} onClose={handleClose} preSelectedRoom={preSelectedRoom} />
     </div>
   );
 };
