@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import coastalPool from "@/assets/coastal-pool.jpg";
 
 const AlchemySection = () => {
@@ -57,16 +58,19 @@ const AlchemySection = () => {
             AaraWild's holistic approach to wellness transcends the ordinary,
             offering pathways to profound transformation.
           </motion.p>
-          <motion.a
+          <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.9, duration: 0.6 }}
             viewport={{ once: true }}
-            href="#"
-            className="luxury-link text-primary-foreground after:bg-primary-foreground"
           >
-            Discover More
-          </motion.a>
+            <Link
+              to="/wellness"
+              className="luxury-link text-primary-foreground after:bg-primary-foreground"
+            >
+              Discover More
+            </Link>
+          </motion.div>
         </div>
       </div>
     </section>

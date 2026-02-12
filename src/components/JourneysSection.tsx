@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import indiaWilderness from "@/assets/india-wilderness.jpg";
 
 const JourneysSection = () => {
@@ -55,16 +56,19 @@ const JourneysSection = () => {
           Embark on transformative journeys that connect you with the world's most
           extraordinary destinations and experiences.
         </motion.p>
-        <motion.a
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.9, duration: 0.6 }}
           viewport={{ once: true }}
-          href="#"
-          className="luxury-link text-primary-foreground after:bg-primary-foreground"
         >
-          Discover More
-        </motion.a>
+          <Link
+            to="/experiences"
+            className="luxury-link text-primary-foreground after:bg-primary-foreground"
+          >
+            Discover More
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

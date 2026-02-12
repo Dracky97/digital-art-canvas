@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import heroVideo from "@/assets/hero-video.mp4";
 
 const HeroVideo = () => {
@@ -55,12 +56,12 @@ const HeroVideo = () => {
         <h3 className="text-2xl lg:text-4xl font-serif tracking-wide mb-4">
           Opens for Reservations
         </h3>
-        <a
-          href="#discover"
+        <Link
+          to="/experiences"
           className="luxury-link text-primary-foreground after:bg-primary-foreground"
         >
           Discover More
-        </a>
+        </Link>
       </motion.div>
 
       {/* Video Controls Overlay */}

@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import storiesWellness from "@/assets/stories-wellness.jpg";
 import storiesCultural from "@/assets/stories-cultural.jpg";
 import storiesNature from "@/assets/stories-nature.jpg";
@@ -13,6 +14,7 @@ const stories = [
     description:
       "Experience holistic rejuvenation at AaraWild's world-class wellness retreats.",
     image: storiesWellness,
+    link: "/wellness",
   },
   {
     category: "Cultural",
@@ -20,6 +22,7 @@ const stories = [
     description:
       "Explore vibrant local cultures with curated experiences at AaraWild destinations.",
     image: storiesCultural,
+    link: "/experiences",
   },
   {
     category: "Nature",
@@ -27,6 +30,7 @@ const stories = [
     description:
       "Discover breathtaking landscapes and diverse wildlife on guided nature trails.",
     image: storiesNature,
+    link: "/experiences",
   },
   {
     category: "Coastal",
@@ -34,6 +38,7 @@ const stories = [
     description:
       "Across the AaraWild globe, oceanfront retreats offer the balm of sun, sea and sand.",
     image: storiesCoastal,
+    link: "/gallery",
   },
 ];
 
@@ -120,12 +125,12 @@ const StoriesCarousel = () => {
               <p className="luxury-body text-muted-foreground text-sm leading-relaxed">
                 {story.description}
               </p>
-              <a
-                href="#"
+              <Link
+                to={story.link}
                 className="luxury-link mt-4 inline-block text-foreground"
               >
                 Discover More
-              </a>
+              </Link>
             </motion.article>
           ))}
         </div>

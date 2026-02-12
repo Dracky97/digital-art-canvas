@@ -1,23 +1,24 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const footerLinks = {
   explore: [
-    { label: "Destinations", href: "#" },
-    { label: "Journeys", href: "#" },
-    { label: "Residences", href: "#" },
-    { label: "Experiences", href: "#" },
+    { label: "Gallery", href: "/gallery" },
+    { label: "Accommodation", href: "/accommodation" },
+    { label: "Experiences", href: "/experiences" },
+    { label: "Dining", href: "/dining" },
   ],
   discover: [
-    { label: "Stories", href: "#" },
-    { label: "Wellness", href: "#" },
-    { label: "Culinary", href: "#" },
-    { label: "Sustainability", href: "#" },
+    { label: "Wellness", href: "/wellness" },
+    { label: "Offers", href: "/offers" },
+    { label: "Getting Here", href: "/getting-here" },
+    { label: "Contact Us", href: "/contact" },
   ],
   connect: [
-    { label: "Contact Us", href: "#" },
-    { label: "Careers", href: "#" },
-    { label: "Press", href: "#" },
-    { label: "Newsletter", href: "#" },
+    { label: "Contact Us", href: "/contact" },
+    { label: "Gallery", href: "/gallery" },
+    { label: "Offers", href: "/offers" },
+    { label: "Experiences", href: "/experiences" },
   ],
 };
 
