@@ -70,8 +70,8 @@ export default {
         "warm-white": "hsl(var(--warm-white))",
       },
       fontFamily: {
-        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
-        sans: ['Montserrat', 'system-ui', 'sans-serif'],
+        serif: ['Lyon Text Web', 'Georgia', 'serif'],
+        sans: ['Lyon Display Web', 'Georgia', 'serif'],
       },
       letterSpacing: {
         'luxury': '0.15em',
