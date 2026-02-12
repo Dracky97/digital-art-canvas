@@ -176,7 +176,7 @@ const Admin = () => {
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <Home className="w-4 h-4 text-muted-foreground" />
-                            {reservation.roomName}
+                            {reservation.rooms?.map(r => `${r.quantity}x ${r.roomName}`).join(', ') || 'N/A'}
                           </div>
                         </TableCell>
                         <TableCell>
