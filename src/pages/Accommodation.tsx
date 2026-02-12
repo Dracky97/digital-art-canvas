@@ -10,40 +10,50 @@ const accommodations = [
     name: "Mud House",
     description: "Rustic yet refined villas crafted from natural materials, seamlessly blending into the surrounding landscape.",
     image: beachCasita,
-    size: "85 sqm",
-    guests: "4 Adults",
+    sizeNum: "85",
+    sizeUnit: "m²",
+    guestsNum: "4",
+    guestsLabel: "Adults",
     features: ["Paddyfield View", "1 King-Size Bed", "2 Deluxe Beds", "Bathtub"],
   },
   {
     name: "Tree House",
     description: "Elevated sanctuaries nestled among the treetops, offering panoramic views and a unique connection to nature.",
     image: tokyoInterior,
-    size: "120 sqm",
-    guests: "4 Adults",
+    sizeNum: "120",
+    sizeUnit: "m²",
+    guestsNum: "4",
+    guestsLabel: "Adults",
     features: ["Forest View", "Jacuzzi Tub", "2 King-Size Beds"],
   },
   {
     name: "Luxury Glamping",
     description: "Opulent tents set in breathtaking locations, combining the adventure of camping with the comforts of a five-star hotel.",
     image: coastalPool,
-    size: "250 sqm",
-    guests: "4 Adults",
-    features: ["1 King-Size Bed", "2 Deluxe Beds", "Indoor & Indoor Bathrooms"],
+    sizeNum: "250",
+    sizeUnit: "m²",
+    guestsNum: "4",
+    guestsLabel: "Adults",
+    features: ["1 King-Size Bed", "2 Deluxe Beds", "Indoor & Outdoor Bathrooms"],
   },
   {
     name: "Luxury Suite",
     description: "The pinnacle of luxury living, featuring a private spa, and panoramic views of the landscape.",
     image: coastalPool,
-    size: "250 sqm",
-    guests: "4 Adults",
+    sizeNum: "250",
+    sizeUnit: "m²",
+    guestsNum: "4",
+    guestsLabel: "Adults",
     features: ["2 Beds", "Private Pool"],
   },
   {
     name: "Family Suite",
     description: "The pinnacle of luxury living, featuring a private spa, and panoramic views of the landscape.",
     image: coastalPool,
-    size: "250 sqm",
-    guests: "7 Adults",
+    sizeNum: "250",
+    sizeUnit: "m²",
+    guestsNum: "7",
+    guestsLabel: "Adults",
     features: ["3 King-Size Beds", "3 Bathrooms"],
   },
 ];
@@ -101,14 +111,16 @@ const Accommodation = () => {
                   <p className="luxury-body text-muted-foreground mb-8">
                     {accommodation.description}
                   </p>
-                  <div className="flex gap-8 mb-8">
+                  <div className="flex gap-12 mb-8">
                     <div>
-                      <span className="luxury-subheading text-muted-foreground block mb-1">Size</span>
-                      <span className="font-serif text-lg">{accommodation.size}</span>
+                      <span className="luxury-subheading text-muted-foreground block mb-2">Size</span>
+                      <span className="font-serif text-3xl font-light tracking-wide">{accommodation.sizeNum}</span>
+                      <span className="font-sans text-xs tracking-wider text-muted-foreground ml-1">{accommodation.sizeUnit}</span>
                     </div>
                     <div>
-                      <span className="luxury-subheading text-muted-foreground block mb-1">Guests</span>
-                      <span className="font-serif text-lg">{accommodation.guests}</span>
+                      <span className="luxury-subheading text-muted-foreground block mb-2">Guests</span>
+                      <span className="font-serif text-3xl font-light tracking-wide">{accommodation.guestsNum}</span>
+                      <span className="font-sans text-xs tracking-wider text-muted-foreground ml-1">{accommodation.guestsLabel}</span>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-3 mb-8">
