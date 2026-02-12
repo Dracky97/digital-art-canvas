@@ -70,8 +70,8 @@ export default {
         "warm-white": "hsl(var(--warm-white))",
       },
       fontFamily: {
-        serif: ['Lyon Text Web', 'Georgia', 'serif'],
-        sans: ['Lyon Display Web', 'Georgia', 'serif'],
+        serif: ['Libre Baskerville', 'Georgia', 'serif'],
+        sans: ['Source Serif 4', 'Georgia', 'serif'],
       },
       letterSpacing: {
         'luxury': '0.15em',
