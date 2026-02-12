@@ -63,6 +63,8 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
   const [guests, setGuests] = useState({ adults: 2, children: 0 });
   const [selectedRoom, setSelectedRoom] = useState<string | undefined>(preSelectedRoom);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [checkInOpen, setCheckInOpen] = useState(false);
+  const [checkOutOpen, setCheckOutOpen] = useState(false);
   const { toast } = useToast();
 
   // Sync preSelectedRoom when modal opens
@@ -216,7 +218,7 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
                   {/* Check-in Date */}
                   <div className="space-y-2">
                     <Label className="text-xs tracking-[0.15em] text-muted-foreground">CHECK-IN</Label>
-                    <Popover>
+                    <Popover open={checkInOpen} onOpenChange={setCheckInOpen}>
                       <PopoverTrigger asChild>
                         <Button
                           variant="outline"
@@ -233,7 +235,7 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
                         <CalendarComponent
                           mode="single"
                           selected={checkIn}
-                          onSelect={setCheckIn}
+                          onSelect={(date) => { setCheckIn(date); setCheckInOpen(false); }}
                           disabled={(date) => date < new Date()}
                           initialFocus
                           className="p-3 pointer-events-auto"
@@ -245,7 +247,7 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
                   {/* Check-out Date */}
                   <div className="space-y-2">
                     <Label className="text-xs tracking-[0.15em] text-muted-foreground">CHECK-OUT</Label>
-                    <Popover>
+                    <Popover open={checkOutOpen} onOpenChange={setCheckOutOpen}>
                       <PopoverTrigger asChild>
                         <Button
                           variant="outline"
@@ -262,7 +264,7 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
                         <CalendarComponent
                           mode="single"
                           selected={checkOut}
-                          onSelect={setCheckOut}
+                          onSelect={(date) => { setCheckOut(date); setCheckOutOpen(false); }}
                           disabled={(date) => date < (checkIn ? addDays(checkIn, 1) : new Date())}
                           initialFocus
                           className="p-3 pointer-events-auto"
