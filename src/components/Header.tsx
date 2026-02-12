@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Search, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import ReservationModal from "./ReservationModal";
+import aarawildLogo from "@/assets/aarawild-logo.png";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -55,9 +56,7 @@ const Header = () => {
 
           {/* Center Logo */}
           <Link to="/" className="flex-1 flex justify-center px-2">
-            <h1 className="text-lg sm:text-2xl lg:text-3xl tracking-luxury-wide font-serif font-normal whitespace-nowrap">
-              AARAWILD
-            </h1>
+            <img src={aarawildLogo} alt="ĀaraWild" className="h-8 sm:h-10 lg:h-12 w-auto" />
           </Link>
 
           {/* Right Navigation */}
@@ -94,9 +93,7 @@ const Header = () => {
                   <X className="w-5 h-5" />
                   <span className="luxury-subheading hidden lg:block">Close</span>
                 </button>
-                <h1 className="text-2xl lg:text-3xl tracking-luxury-wide font-serif font-normal">
-                  ĀARAWILD
-                </h1>
+                <img src={aarawildLogo} alt="ĀaraWild" className="h-10 lg:h-12 w-auto" />
                 <div className="w-20" />
               </div>
 
