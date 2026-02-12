@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ReservationModal from "@/components/ReservationModal";
 import beachCasita from "@/assets/beach-casita.jpg";
 import tokyoInterior from "@/assets/tokyo-interior.jpg";
 import coastalPool from "@/assets/coastal-pool.jpg";
@@ -49,6 +51,8 @@ const accommodations = [
 ];
 
 const Accommodation = () => {
+  const [isReservationOpen, setIsReservationOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -121,8 +125,11 @@ const Accommodation = () => {
                       </span>
                     ))}
                   </div>
-                  <button className="luxury-subheading px-8 py-4 border border-foreground hover:bg-foreground hover:text-background transition-all duration-300">
-                    View Details
+                  <button
+                    onClick={() => setIsReservationOpen(true)}
+                    className="luxury-subheading px-8 py-4 border border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
+                  >
+                    Reserve Now
                   </button>
                 </div>
               </motion.div>
@@ -131,6 +138,7 @@ const Accommodation = () => {
         </section>
       </main>
       <Footer />
+      <ReservationModal isOpen={isReservationOpen} onClose={() => setIsReservationOpen(false)} />
     </div>
   );
 };
