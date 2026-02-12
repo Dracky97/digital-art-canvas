@@ -165,8 +165,8 @@ const Contact = () => {
               <h2 className="text-2xl font-serif tracking-luxury mb-8">Our Location</h2>
               <div className="aspect-[21/9] w-full overflow-hidden border border-foreground/10">
                 <iframe
-                  src="<iframe src="
-                  https:width="100%" //www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d492.36176377850416!2d80.72258997929482!3d7.88648093809348!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2slk!4v1770875354744!5m2!1sen!2slk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>"
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d492.36176377850416!2d80.72258997929482!3d7.88648093809348!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2slk!4v1770875354744!5m2!1sen!2slk"
+                  width="100%"
                   height="100%"
                   style={{ border: 0 }}
                   allowFullScreen
