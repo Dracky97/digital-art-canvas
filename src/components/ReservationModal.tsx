@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format, addDays } from "date-fns";
-import { Calendar, Users, Home, User, X, ChevronRight, ChevronLeft, Check } from "lucide-react";
+import { Calendar, Users, Home, User, X, ChevronRight, ChevronLeft, Check, Bed, Maximize, Plus, Minus } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,9 +40,21 @@ const roomImages: Record<string, string> = {
   "family-suite": coastalPool,
 };
 
+const roomDetails: Record<string, { size: string; maxGuests: number; features: string[] }> = {
+  "mud-house": { size: "85 sqm", maxGuests: 4, features: ["Paddyfield View", "King Bed", "Bathtub"] },
+  "tree-house": { size: "120 sqm", maxGuests: 4, features: ["Forest View", "Jacuzzi", "2 King Beds"] },
+  "glamping": { size: "60 sqm", maxGuests: 4, features: ["Safari View", "King Bed", "Outdoor Bath"] },
+  "luxury-suite": { size: "250 sqm", maxGuests: 4, features: ["Private Pool", "2 Beds", "Butler Service"] },
+  "family-suite": { size: "300 sqm", maxGuests: 7, features: ["3 King Beds", "3 Baths", "Living Room"] },
+};
+
 const getRooms = () => {
   const prices = getRoomPrices();
-  return prices.map(r => ({ ...r, image: roomImages[r.id] || indiaWilderness }));
+  return prices.map(r => ({
+    ...r,
+    image: roomImages[r.id] || indiaWilderness,
+    ...(roomDetails[r.id] || { size: "—", maxGuests: 2, features: [] }),
+  }));
 };
 
 const guestFormSchema = z.object({
@@ -57,22 +69,23 @@ type GuestFormData = z.infer<typeof guestFormSchema>;
 
 const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModalProps) => {
   const rooms = getRooms();
-  const [step, setStep] = useState(preSelectedRoom ? 1 : 1);
+  const [step, setStep] = useState(1);
   const [checkIn, setCheckIn] = useState<Date>();
   const [checkOut, setCheckOut] = useState<Date>();
   const [guests, setGuests] = useState({ adults: 2, children: 0 });
-  const [selectedRoom, setSelectedRoom] = useState<string | undefined>(preSelectedRoom);
+  const [selectedRooms, setSelectedRooms] = useState<Record<string, number>>(
+    preSelectedRoom ? { [preSelectedRoom]: 1 } : {}
+  );
   const [isProcessing, setIsProcessing] = useState(false);
   const [checkInOpen, setCheckInOpen] = useState(false);
   const [checkOutOpen, setCheckOutOpen] = useState(false);
   const { toast } = useToast();
 
-  // Sync preSelectedRoom when modal opens
   const handleClose = () => {
     setStep(1);
     setCheckIn(undefined);
     setCheckOut(undefined);
-    setSelectedRoom(undefined);
+    setSelectedRooms({});
     setGuests({ adults: 2, children: 0 });
     form.reset();
     onClose();
@@ -80,9 +93,36 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
 
   useEffect(() => {
     if (isOpen && preSelectedRoom) {
-      setSelectedRoom(preSelectedRoom);
+      setSelectedRooms(prev => ({ ...prev, [preSelectedRoom]: Math.max(prev[preSelectedRoom] || 0, 1) }));
     }
   }, [isOpen, preSelectedRoom]);
+
+  const toggleRoom = (roomId: string) => {
+    setSelectedRooms(prev => {
+      const current = prev[roomId] || 0;
+      if (current > 0) {
+        const next = { ...prev };
+        delete next[roomId];
+        return next;
+      }
+      return { ...prev, [roomId]: 1 };
+    });
+  };
+
+  const updateRoomQuantity = (roomId: string, delta: number) => {
+    setSelectedRooms(prev => {
+      const current = prev[roomId] || 0;
+      const next = Math.max(0, Math.min(5, current + delta));
+      if (next === 0) {
+        const updated = { ...prev };
+        delete updated[roomId];
+        return updated;
+      }
+      return { ...prev, [roomId]: next };
+    });
+  };
+
+  const hasSelectedRooms = Object.keys(selectedRooms).length > 0;
 
   const form = useForm<GuestFormData>({
     resolver: zodResolver(guestFormSchema),
@@ -100,12 +140,11 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
       toast({ title: "Please select check-in and check-out dates", variant: "destructive" });
       return;
     }
-    if (step === 2 && !selectedRoom) {
-      toast({ title: "Please select a room", variant: "destructive" });
+    if (step === 2 && !hasSelectedRooms) {
+      toast({ title: "Please select at least one room", variant: "destructive" });
       return;
     }
     if (step === 3) {
-      // Validate form before moving to step 4
       form.trigger().then((isValid) => {
         if (isValid) {
           setStep(step + 1);
@@ -119,15 +158,22 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
   const handleBack = () => setStep(step - 1);
 
   const handlePaymentSuccess = () => {
-    const selectedRoomData = rooms.find(r => r.id === selectedRoom);
     const nights = checkIn && checkOut ? Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)) : 0;
     const formData = form.getValues();
-    
-    // Save reservation to localStorage
-    if (selectedRoomData && checkIn && checkOut) {
+
+    const roomSelections = Object.entries(selectedRooms).map(([roomId, quantity]) => {
+      const room = rooms.find(r => r.id === roomId);
+      return {
+        roomId,
+        roomName: room?.name || '',
+        quantity,
+        pricePerNight: room?.price || 0,
+      };
+    });
+
+    if (checkIn && checkOut && roomSelections.length > 0) {
       saveReservation({
-        roomId: selectedRoomData.id,
-        roomName: selectedRoomData.name,
+        rooms: roomSelections,
         checkIn: checkIn.toISOString(),
         checkOut: checkOut.toISOString(),
         guests,
@@ -142,19 +188,21 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
         nights,
       });
     }
-    
+
+    const roomSummary = roomSelections.map(r => `${r.quantity}x ${r.roomName}`).join(', ');
     toast({
       title: "Payment Successful!",
-      description: `Thank you ${formData.firstName}! Your ${selectedRoomData?.name} is booked for ${nights} nights.`,
+      description: `Thank you ${formData.firstName}! Booked ${roomSummary} for ${nights} nights.`,
     });
-    
-    // Reset and close
+
     handleClose();
   };
 
-  const selectedRoomData = rooms.find(r => r.id === selectedRoom);
   const nights = checkIn && checkOut ? Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)) : 0;
-  const totalPrice = selectedRoomData ? selectedRoomData.price * nights : 0;
+  const totalPrice = Object.entries(selectedRooms).reduce((sum, [roomId, qty]) => {
+    const room = rooms.find(r => r.id === roomId);
+    return sum + (room?.price || 0) * qty * nights;
+  }, 0);
 
   const stepVariants = {
     enter: { opacity: 0, x: 20 },
@@ -336,38 +384,87 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
                 transition={{ duration: 0.3 }}
                 className="space-y-4"
               >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {rooms.map((room) => (
-                    <button
-                      key={room.id}
-                      onClick={() => setSelectedRoom(room.id)}
-                      className={cn(
-                        "relative overflow-hidden rounded-lg border-2 transition-all text-left",
-                        selectedRoom === room.id
-                          ? "border-foreground"
-                          : "border-transparent hover:border-muted-foreground/30"
-                      )}
-                    >
-                      <div className="aspect-[4/3] relative">
-                        <img
-                          src={room.image}
-                          alt={room.name}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 to-transparent" />
-                        {selectedRoom === room.id && (
-                          <div className="absolute top-3 right-3 w-6 h-6 bg-background rounded-full flex items-center justify-center">
-                            <Check className="w-4 h-4" />
-                          </div>
+                <p className="text-sm text-muted-foreground mb-4">Select one or more room types and choose the quantity for each.</p>
+                <div className="space-y-3 max-h-[360px] overflow-y-auto pr-1">
+                  {rooms.map((room) => {
+                    const isSelected = (selectedRooms[room.id] || 0) > 0;
+                    const qty = selectedRooms[room.id] || 0;
+                    return (
+                      <div
+                        key={room.id}
+                        className={cn(
+                          "flex gap-4 rounded-lg border-2 p-3 transition-all cursor-pointer",
+                          isSelected
+                            ? "border-foreground bg-muted/40"
+                            : "border-border hover:border-muted-foreground/40"
                         )}
-                        <div className="absolute bottom-0 left-0 right-0 p-4">
-                          <h3 className="text-background font-serif text-lg">{room.name}</h3>
-                          <p className="text-background/80 text-sm">From ${room.price}/night</p>
+                        onClick={() => !isSelected && toggleRoom(room.id)}
+                      >
+                        {/* Thumbnail */}
+                        <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-md overflow-hidden flex-shrink-0">
+                          <img src={room.image} alt={room.name} className="w-full h-full object-cover" />
+                        </div>
+
+                        {/* Info */}
+                        <div className="flex-1 min-w-0 flex flex-col justify-between">
+                          <div>
+                            <div className="flex items-center justify-between">
+                              <h3 className="font-serif text-base sm:text-lg leading-tight">{room.name}</h3>
+                              {isSelected && (
+                                <div className="w-5 h-5 bg-foreground rounded-full flex items-center justify-center flex-shrink-0">
+                                  <Check className="w-3 h-3 text-background" />
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1"><Maximize className="w-3 h-3" />{room.size}</span>
+                              <span className="flex items-center gap-1"><Users className="w-3 h-3" />Up to {room.maxGuests}</span>
+                            </div>
+                            <div className="flex flex-wrap gap-1.5 mt-2">
+                              {room.features.map((f) => (
+                                <span key={f} className="text-[10px] tracking-wider uppercase px-2 py-0.5 bg-muted rounded-full text-muted-foreground">
+                                  {f}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between mt-2">
+                            <span className="font-serif text-sm font-medium">${room.price}<span className="text-muted-foreground text-xs font-sans">/night</span></span>
+                            {isSelected ? (
+                              <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                                <button
+                                  onClick={() => updateRoomQuantity(room.id, -1)}
+                                  className="w-7 h-7 border border-border rounded-full flex items-center justify-center hover:bg-muted transition-colors"
+                                >
+                                  <Minus className="w-3 h-3" />
+                                </button>
+                                <span className="w-5 text-center text-sm font-medium">{qty}</span>
+                                <button
+                                  onClick={() => updateRoomQuantity(room.id, 1)}
+                                  className="w-7 h-7 border border-border rounded-full flex items-center justify-center hover:bg-muted transition-colors"
+                                >
+                                  <Plus className="w-3 h-3" />
+                                </button>
+                              </div>
+                            ) : (
+                              <span className="text-xs text-muted-foreground">Click to select</span>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </button>
-                  ))}
+                    );
+                  })}
                 </div>
+                {hasSelectedRooms && (
+                  <div className="pt-3 border-t border-border flex justify-between items-center text-sm">
+                    <span className="text-muted-foreground">
+                      {Object.values(selectedRooms).reduce((a, b) => a + b, 0)} room(s) selected
+                    </span>
+                    <span className="font-medium">
+                      ${Object.entries(selectedRooms).reduce((sum, [id, qty]) => sum + (rooms.find(r => r.id === id)?.price || 0) * qty, 0).toLocaleString()}/night
+                    </span>
+                  </div>
+                )}
               </motion.div>
             )}
 
@@ -470,9 +567,17 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
                   <h3 className="font-serif text-lg">Booking Summary</h3>
                   
                   <div className="space-y-3 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Room</span>
-                      <span>{selectedRoomData?.name}</span>
+                    <div>
+                      <span className="text-muted-foreground block mb-2">Rooms</span>
+                      {Object.entries(selectedRooms).map(([roomId, qty]) => {
+                        const room = rooms.find(r => r.id === roomId);
+                        return (
+                          <div key={roomId} className="flex justify-between py-1">
+                            <span>{qty}x {room?.name}</span>
+                            <span>${((room?.price || 0) * qty).toLocaleString()}/night</span>
+                          </div>
+                        );
+                      })}
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Check-in</span>
@@ -489,10 +594,6 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Nights</span>
                       <span>{nights}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Rate per night</span>
-                      <span>${selectedRoomData?.price}/night</span>
                     </div>
                     <div className="border-t border-border pt-3 flex justify-between font-medium">
                       <span>Total</span>

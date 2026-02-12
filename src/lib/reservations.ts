@@ -1,7 +1,13 @@
-export interface Reservation {
-  id: string;
+export interface RoomSelection {
   roomId: string;
   roomName: string;
+  quantity: number;
+  pricePerNight: number;
+}
+
+export interface Reservation {
+  id: string;
+  rooms: RoomSelection[];
   checkIn: string;
   checkOut: string;
   guests: {
