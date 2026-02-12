@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import heroReflection from "@/assets/hero-reflection-pool.jpg";
 
 const DestinationsSection = () => {
@@ -49,16 +50,19 @@ const DestinationsSection = () => {
           >
             Destinations
           </motion.h2>
-          <motion.a
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.6 }}
             viewport={{ once: true }}
-            href="#"
-            className="luxury-link text-primary-foreground after:bg-primary-foreground"
           >
-            Discover More
-          </motion.a>
+            <Link
+              to="/gallery"
+              className="luxury-link text-primary-foreground after:bg-primary-foreground"
+            >
+              Discover More
+            </Link>
+          </motion.div>
         </div>
     </section>
   );

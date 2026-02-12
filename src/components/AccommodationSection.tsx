@@ -3,6 +3,7 @@ import { useState, useCallback, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import roomMudHouse from "@/assets/room-mud-house.jpg";
 import roomTreehouse from "@/assets/room-treehouse.jpg";
 import roomGlamping from "@/assets/room-glamping.jpg";
@@ -107,7 +108,7 @@ const AccommodationSection = () => {
                   key={room.name}
                   className="flex-[0_0_85%] md:flex-[0_0_45%] lg:flex-[0_0_35%] min-w-0 pl-4 lg:pl-6 first:pl-6 lg:first:pl-12"
                 >
-                  <div className="group cursor-pointer">
+                  <Link to="/accommodation" className="group cursor-pointer block">
                     <div className="relative aspect-[3/4] overflow-hidden">
                       <img
                         src={room.image}
@@ -139,7 +140,7 @@ const AccommodationSection = () => {
                         </span>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               ))}
             </div>
