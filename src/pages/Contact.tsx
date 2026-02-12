@@ -165,6 +165,32 @@ const Contact = () => {
           </div>
         </section>
 
+        {/* Google Map */}
+        <section className="px-6 lg:px-12 mb-24">
+          <div className="max-w-[1800px] mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-2xl font-serif tracking-luxury mb-8">Our Location</h2>
+              <div className="aspect-[21/9] w-full overflow-hidden border border-foreground/10">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31584.28036978!2d80.6450!3d7.8731!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3afca41c0beb80cf%3A0x4f3c4e0c5e1a7b0!2sKandalama%2C%20Dambulla%2C%20Sri%20Lanka!5e0!3m2!1sen!2s!4v1700000000000"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="AaraWild Location - Kandalama, Dambulla"
+                />
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
         {/* FAQ CTA */}
         <section className="px-6 lg:px-12 py-20 bg-secondary/30">
           <div className="max-w-[1800px] mx-auto text-center">
