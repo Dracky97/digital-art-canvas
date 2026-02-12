@@ -37,12 +37,10 @@ const Contact = () => {
             transition={{ duration: 0.8 }}
             className="max-w-[1800px] mx-auto"
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif tracking-luxury mb-6">
-              Contact Us
-            </h1>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif tracking-luxury mb-6">Contact Us</h1>
             <p className="luxury-body text-muted-foreground max-w-2xl">
-              We're here to assist you with any inquiries. Whether you're planning your 
-              first visit or returning as a cherished guest, our team is ready to help.
+              We're here to assist you with any inquiries. Whether you're planning your first visit or returning as a
+              cherished guest, our team is ready to help.
             </p>
           </motion.div>
         </section>
@@ -66,7 +64,9 @@ const Contact = () => {
                       <div>
                         <h3 className="font-serif text-lg mb-2">{info.title}</h3>
                         {info.details.map((detail) => (
-                          <p key={detail} className="text-muted-foreground">{detail}</p>
+                          <p key={detail} className="text-muted-foreground">
+                            {detail}
+                          </p>
                         ))}
                         <p className="text-sm text-muted-foreground/60 mt-2">{info.description}</p>
                       </div>
@@ -94,18 +94,14 @@ const Contact = () => {
                 <form className="space-y-6">
                   <div className="grid sm:grid-cols-2 gap-6">
                     <div>
-                      <label className="luxury-subheading text-muted-foreground block mb-2">
-                        First Name
-                      </label>
+                      <label className="luxury-subheading text-muted-foreground block mb-2">First Name</label>
                       <input
                         type="text"
                         className="w-full bg-transparent border-b border-foreground/30 px-0 py-3 focus:outline-none focus:border-foreground transition-colors duration-300"
                       />
                     </div>
                     <div>
-                      <label className="luxury-subheading text-muted-foreground block mb-2">
-                        Last Name
-                      </label>
+                      <label className="luxury-subheading text-muted-foreground block mb-2">Last Name</label>
                       <input
                         type="text"
                         className="w-full bg-transparent border-b border-foreground/30 px-0 py-3 focus:outline-none focus:border-foreground transition-colors duration-300"
@@ -113,27 +109,21 @@ const Contact = () => {
                     </div>
                   </div>
                   <div>
-                    <label className="luxury-subheading text-muted-foreground block mb-2">
-                      Email Address
-                    </label>
+                    <label className="luxury-subheading text-muted-foreground block mb-2">Email Address</label>
                     <input
                       type="email"
                       className="w-full bg-transparent border-b border-foreground/30 px-0 py-3 focus:outline-none focus:border-foreground transition-colors duration-300"
                     />
                   </div>
                   <div>
-                    <label className="luxury-subheading text-muted-foreground block mb-2">
-                      Phone Number
-                    </label>
+                    <label className="luxury-subheading text-muted-foreground block mb-2">Phone Number</label>
                     <input
                       type="tel"
                       className="w-full bg-transparent border-b border-foreground/30 px-0 py-3 focus:outline-none focus:border-foreground transition-colors duration-300"
                     />
                   </div>
                   <div>
-                    <label className="luxury-subheading text-muted-foreground block mb-2">
-                      Inquiry Type
-                    </label>
+                    <label className="luxury-subheading text-muted-foreground block mb-2">Inquiry Type</label>
                     <select className="w-full bg-transparent border-b border-foreground/30 px-0 py-3 focus:outline-none focus:border-foreground transition-colors duration-300 cursor-pointer">
                       <option value="">Select an option</option>
                       <option value="reservations">Reservations</option>
@@ -145,9 +135,7 @@ const Contact = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="luxury-subheading text-muted-foreground block mb-2">
-                      Message
-                    </label>
+                    <label className="luxury-subheading text-muted-foreground block mb-2">Message</label>
                     <textarea
                       rows={4}
                       className="w-full bg-transparent border-b border-foreground/30 px-0 py-3 focus:outline-none focus:border-foreground transition-colors duration-300 resize-none"
@@ -177,7 +165,7 @@ const Contact = () => {
               <h2 className="text-2xl font-serif tracking-luxury mb-8">Our Location</h2>
               <div className="aspect-[21/9] w-full overflow-hidden border border-foreground/10">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31584.28036978!2d80.6450!3d7.8731!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3afca41c0beb80cf%3A0x4f3c4e0c5e1a7b0!2sKandalama%2C%20Dambulla%2C%20Sri%20Lanka!5e0!3m2!1sen!2s!4v1700000000000"
+                  src="https://maps.app.goo.gl/mzzV5G8NN9gBrPVe9"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -200,12 +188,10 @@ const Contact = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-serif tracking-luxury mb-6">
-                Frequently Asked Questions
-              </h2>
+              <h2 className="text-3xl md:text-4xl font-serif tracking-luxury mb-6">Frequently Asked Questions</h2>
               <p className="luxury-body text-muted-foreground max-w-2xl mx-auto mb-8">
-                Find answers to common questions about reservations, experiences, 
-                policies, and more in our comprehensive FAQ section.
+                Find answers to common questions about reservations, experiences, policies, and more in our
+                comprehensive FAQ section.
               </p>
               <button className="luxury-subheading px-8 py-4 border border-foreground hover:bg-foreground hover:text-background transition-all duration-300">
                 View FAQ
