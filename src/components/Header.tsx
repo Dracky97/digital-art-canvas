@@ -25,7 +25,7 @@ const Header = () => {
     { label: "Dining", href: "/dining" },
     { label: "Wellness", href: "/wellness" },
     { label: "Exclusive Offers", href: "/offers" },
-    { label: "Getting Here", href: "/getting-here" },
+    
     { label: "Contact Us", href: "/contact" },
   ];
 

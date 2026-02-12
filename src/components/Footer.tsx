@@ -11,7 +11,7 @@ const footerLinks = {
   discover: [
     { label: "Wellness", href: "/wellness" },
     { label: "Offers", href: "/offers" },
-    { label: "Getting Here", href: "/getting-here" },
+    
     { label: "Contact Us", href: "/contact" },
   ],
   connect: [
