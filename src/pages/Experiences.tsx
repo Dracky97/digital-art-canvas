@@ -1,40 +1,56 @@
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import indiaWilderness from "@/assets/india-wilderness.jpg";
-import skiMountains from "@/assets/ski-mountains.jpg";
-import coastalPool from "@/assets/coastal-pool.jpg";
+import expNatureAdventure from "@/assets/exp-nature-adventure.jpg";
+import expCulturalJourneys from "@/assets/exp-cultural-journeys.jpg";
+import expWellnessMindfulness from "@/assets/exp-wellness-mindfulness.jpg";
+import expCommunityLearning from "@/assets/exp-community-learning.jpg";
 
 const experiences = [
   {
-    title: "Wildlife Safaris",
-    description: "Embark on extraordinary wildlife encounters led by expert naturalists, from tracking Bengal tigers to witnessing the great migration.",
-    image: indiaWilderness,
-    duration: "Half Day - Full Day",
+    title: "Nature & Adventure",
+    description: "Step into the wilderness and awaken your sense of wonder. Explore the Kaludiya Pokuna sanctuary, paddle across mirrored waters, or witness rare birds.",
+    highlights: [
+      "Guided forest walks through Kaludiya Pokuna Sanctuary",
+      "Birdwatching and wildlife encounters",
+      "Kayaking and lake exploration",
+      "Scenic cycling and photography trails",
+    ],
+    image: expNatureAdventure,
   },
   {
-    title: "Mountain Expeditions",
-    description: "Scale pristine peaks with world-class guides, whether you're seeking challenging climbs or scenic alpine walks.",
-    image: skiMountains,
-    duration: "2-7 Days",
+    title: "Cultural Journeys",
+    description: "Immerse yourself in Sri Lanka's timeless heritage. Visit ancient cities and rural villages where traditional crafts and music come alive.",
+    highlights: [
+      "Guided tours to UNESCO World Heritage sites (Sigiriya, Dambulla, Polonnaruwa)",
+      "Village walks and temple visits",
+      "Traditional cooking and pottery demonstrations",
+      "Cultural performances under the stars",
+    ],
+    image: expCulturalJourneys,
   },
   {
-    title: "Wellness Retreats",
-    description: "Immerse yourself in holistic healing traditions, from ancient Ayurvedic treatments to modern wellness therapies.",
-    image: coastalPool,
-    duration: "3-14 Days",
+    title: "Wellness & Mindfulness",
+    description: "Experience inner harmony through yoga, meditation, and Ayurveda guided by the rhythms of nature.",
+    highlights: [
+      "Sunrise and sunset yoga sessions",
+      "Forest meditation and breathwork",
+      "Ayurvedic wellness therapies",
+      "Herbal baths and healing teas",
+    ],
+    image: expWellnessMindfulness,
   },
-];
-
-const activities = [
-  "Private Yoga Sessions",
-  "Guided Meditation",
-  "Culinary Workshops",
-  "Art & Culture Tours",
-  "Stargazing Experiences",
-  "Conservation Programs",
-  "Water Sports",
-  "Helicopter Tours",
+  {
+    title: "Community & Learning",
+    description: "Engage with the local community to learn, create, and give back.",
+    highlights: [
+      "Local crafts and cooking workshops",
+      "Community-led conservation programs",
+      "Educational nature walks with local guides",
+      "Farm visits and sustainable living sessions",
+    ],
+    image: expCommunityLearning,
+  },
 ];
 
 const Experiences = () => {
@@ -60,70 +76,48 @@ const Experiences = () => {
           </motion.div>
         </section>
 
-        {/* Featured Experiences */}
+        {/* Experiences */}
         <section className="px-6 lg:px-12 mb-24">
-          <div className="max-w-[1800px] mx-auto">
-            <div className="grid lg:grid-cols-3 gap-8">
-              {experiences.map((experience, index) => (
-                <motion.div
-                  key={experience.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="group"
-                >
-                  <div className="aspect-[3/4] overflow-hidden mb-6">
+          <div className="max-w-[1800px] mx-auto space-y-32">
+            {experiences.map((experience, index) => (
+              <motion.div
+                key={experience.title}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+                className="grid lg:grid-cols-2 gap-12 items-center"
+              >
+                <div className={index % 2 === 1 ? "lg:order-2" : ""}>
+                  <div className="aspect-[4/3] overflow-hidden">
                     <img
                       src={experience.image}
                       alt={experience.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="w-full h-full object-cover"
                     />
                   </div>
-                  <span className="luxury-subheading text-muted-foreground mb-2 block">
-                    {experience.duration}
-                  </span>
-                  <h3 className="text-2xl font-serif tracking-luxury mb-3">
+                </div>
+                <div className={index % 2 === 1 ? "lg:order-1" : ""}>
+                  <h2 className="text-3xl md:text-4xl font-serif tracking-luxury mb-6">
                     {experience.title}
-                  </h3>
-                  <p className="luxury-body text-muted-foreground mb-4">
+                  </h2>
+                  <p className="luxury-body text-muted-foreground mb-6">
                     {experience.description}
                   </p>
-                  <button className="luxury-subheading hover:opacity-60 transition-opacity">
-                    Learn More →
-                  </button>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Activities Grid */}
-        <section className="px-6 lg:px-12 py-20 bg-secondary/30">
-          <div className="max-w-[1800px] mx-auto">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-4xl font-serif tracking-luxury mb-12 text-center"
-            >
-              Activities & Adventures
-            </motion.h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {activities.map((activity, index) => (
-                <motion.div
-                  key={activity}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05, duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="p-6 border border-foreground/10 hover:border-foreground/30 transition-colors duration-300 text-center"
-                >
-                  <span className="font-serif tracking-wide">{activity}</span>
-                </motion.div>
-              ))}
-            </div>
+                  <div className="mb-8">
+                    <span className="luxury-subheading text-muted-foreground block mb-3">Signature Highlights</span>
+                    <ul className="space-y-2">
+                      {experience.highlights.map((highlight) => (
+                        <li key={highlight} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <span className="w-1 h-1 rounded-full bg-foreground mt-2 flex-shrink-0" />
+                          {highlight}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </section>
       </main>
