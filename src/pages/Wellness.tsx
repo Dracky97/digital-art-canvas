@@ -4,38 +4,22 @@ import Footer from "@/components/Footer";
 import coastalPool from "@/assets/coastal-pool.jpg";
 import heroReflectionPool from "@/assets/hero-reflection-pool.jpg";
 
-const treatments = [
+const rituals = [
   {
-    name: "Signature Massage",
-    duration: "90 minutes",
-    description: "A deeply restorative full-body massage combining ancient techniques with modern wellness practices.",
+    name: "Aara Rebalance",
+    focus: "Realigning energy flow and releasing tension.",
+    process: "Warm oil head massage, herbal body compress, guided breathing, and aromatic tea ritual.",
   },
   {
-    name: "Ayurvedic Ritual",
-    duration: "120 minutes",
-    description: "Traditional Ayurvedic treatments tailored to your dosha, promoting balance and inner harmony.",
+    name: "Herbal Revival",
+    focus: "Rejuvenation and inner glow.",
+    process: "Organic rice and sandalwood scrub exfoliation, warm oil therapy, and a turmeric and rose essence facial.",
   },
   {
-    name: "Ocean Renewal Facial",
-    duration: "75 minutes",
-    description: "A rejuvenating facial using marine-derived ingredients and advanced skincare techniques.",
+    name: "Forest Detox",
+    focus: "Deep cleansing using forest purity.",
+    process: "Steam therapy (lemongrass/eucalyptus), green tea and herbal oil detox massage, and an open-sky shower.",
   },
-  {
-    name: "Sound Healing Journey",
-    duration: "60 minutes",
-    description: "Experience deep relaxation through the healing vibrations of crystal singing bowls and gongs.",
-  },
-];
-
-const facilities = [
-  "Infinity Pool",
-  "Steam Room",
-  "Sauna",
-  "Ice Bath",
-  "Meditation Pavilion",
-  "Yoga Studio",
-  "Fitness Center",
-  "Treatment Rooms",
 ];
 
 const Wellness = () => {
@@ -52,11 +36,11 @@ const Wellness = () => {
             className="max-w-[1800px] mx-auto"
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif tracking-luxury mb-6">
-              Wellness
+              Wellness & Spa
             </h1>
-            <p className="luxury-body text-muted-foreground max-w-2xl">
-              A sanctuary for renewal and restoration. Our holistic approach to wellness 
-              nurtures body, mind, and spirit through ancient wisdom and modern practices.
+            <p className="luxury-body text-muted-foreground max-w-2xl text-lg leading-relaxed">
+              A journey of rediscovery guided by nature's wisdom. Simplicity and purity —
+              open spaces, sunlight, forest breezes, and herbal oils.
             </p>
           </motion.div>
         </section>
@@ -73,82 +57,47 @@ const Wellness = () => {
             >
               <img
                 src={heroReflectionPool}
-                alt="Wellness spa"
+                alt="Wellness spa surrounded by nature"
                 className="w-full h-full object-cover"
               />
             </motion.div>
           </div>
         </section>
 
-        {/* Treatments */}
+        {/* Philosophy */}
         <section className="px-6 lg:px-12 mb-24">
           <div className="max-w-[1800px] mx-auto">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="text-3xl md:text-4xl font-serif tracking-luxury mb-12"
-            >
-              Signature Treatments
-            </motion.h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {treatments.map((treatment, index) => (
-                <motion.div
-                  key={treatment.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="p-8 border border-foreground/10 hover:border-foreground/30 transition-colors duration-300"
-                >
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-xl font-serif tracking-luxury">{treatment.name}</h3>
-                    <span className="luxury-subheading text-muted-foreground">{treatment.duration}</span>
-                  </div>
-                  <p className="luxury-body text-muted-foreground">{treatment.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Facilities */}
-        <section className="px-6 lg:px-12 py-20 bg-secondary/30 mb-24">
-          <div className="max-w-[1800px] mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
               >
+                <p className="luxury-subheading text-muted-foreground mb-4">PHILOSOPHY</p>
                 <h2 className="text-3xl md:text-4xl font-serif tracking-luxury mb-6">
-                  Spa Facilities
+                  Inspired by Ayurveda & Nature
                 </h2>
-                <p className="luxury-body text-muted-foreground mb-8">
-                  Our world-class facilities are designed to complement your wellness journey, 
-                  offering spaces for both invigorating exercise and peaceful contemplation.
+                <p className="luxury-body text-muted-foreground mb-6 leading-relaxed">
+                  Treatments are personalized based on a wellness consultation to balance
+                  your body's dosha — Vata, Pitta, or Kapha. Our approach draws from
+                  centuries of Ayurvedic wisdom, harmonizing ancient practice with the
+                  healing power of the natural world.
                 </p>
-                <div className="grid grid-cols-2 gap-4">
-                  {facilities.map((facility) => (
-                    <div key={facility} className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-foreground/30 rounded-full" />
-                      <span className="font-serif">{facility}</span>
-                    </div>
-                  ))}
-                </div>
+                <p className="font-serif text-lg italic text-muted-foreground">
+                  "Healing begins when you slow down enough to listen to nature."
+                </p>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
-                className="aspect-square overflow-hidden"
+                className="aspect-[4/5] overflow-hidden"
               >
                 <img
                   src={coastalPool}
-                  alt="Spa facilities"
+                  alt="Ayurvedic wellness space"
                   className="w-full h-full object-cover"
                 />
               </motion.div>
@@ -156,8 +105,48 @@ const Wellness = () => {
           </div>
         </section>
 
-        {/* Wellness Programs */}
-        <section className="px-6 lg:px-12">
+        {/* Signature Rituals */}
+        <section className="px-6 lg:px-12 mb-24">
+          <div className="max-w-[1800px] mx-auto">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl font-serif tracking-luxury mb-4"
+            >
+              Signature Rituals
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.6 }}
+              viewport={{ once: true }}
+              className="luxury-body text-muted-foreground mb-12 max-w-xl"
+            >
+              Each ritual is a carefully curated sequence designed to restore, rejuvenate, and reconnect.
+            </motion.p>
+            <div className="grid md:grid-cols-3 gap-8">
+              {rituals.map((ritual, index) => (
+                <motion.div
+                  key={ritual.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.15, duration: 0.6 }}
+                  viewport={{ once: true }}
+                  className="p-8 border border-foreground/10 hover:border-foreground/30 transition-colors duration-300"
+                >
+                  <h3 className="text-xl font-serif tracking-luxury mb-3">{ritual.name}</h3>
+                  <p className="luxury-subheading text-muted-foreground mb-4">{ritual.focus}</p>
+                  <p className="luxury-body text-muted-foreground">{ritual.process}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* The Wellness Pavilion */}
+        <section className="px-6 lg:px-12 py-20 bg-secondary/30 mb-24">
           <div className="max-w-[1800px] mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -165,17 +154,31 @@ const Wellness = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
+              <p className="luxury-subheading text-muted-foreground mb-4">FACILITIES</p>
               <h2 className="text-3xl md:text-4xl font-serif tracking-luxury mb-6">
-                Wellness Programs
+                The Wellness Pavilion
               </h2>
-              <p className="luxury-body text-muted-foreground max-w-2xl mx-auto mb-8">
-                Immersive multi-day programs designed by our wellness experts to address 
-                specific goals, from stress relief to fitness transformation.
+              <p className="luxury-body text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
+                Designed to immerse guests in nature while providing refined relaxation.
+                Open-air treatment rooms, forest-view meditation decks, and herbal steam chambers
+                create a sanctuary where healing happens effortlessly.
               </p>
-              <button className="luxury-subheading px-8 py-4 border border-foreground hover:bg-foreground hover:text-background transition-all duration-300">
-                Explore Programs
-              </button>
             </motion.div>
+          </div>
+        </section>
+
+        {/* Closing Quote */}
+        <section className="px-6 lg:px-12">
+          <div className="max-w-[1800px] mx-auto text-center">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-2xl md:text-3xl font-serif tracking-luxury text-muted-foreground italic max-w-3xl mx-auto"
+            >
+              "At Aara, we don't just treat the body — we nurture the soul."
+            </motion.p>
           </div>
         </section>
       </main>
