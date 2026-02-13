@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
-import { Calendar, Users, Home, Mail, Phone, Trash2, ArrowLeft, DollarSign, Save } from "lucide-react";
+import { Calendar, Users, Home, Mail, Phone, Trash2, ArrowLeft, DollarSign, Save, Tag } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -27,12 +27,15 @@ import {
 } from "@/components/ui/alert-dialog";
 import { getReservations, deleteReservation, updateReservationStatus, Reservation } from "@/lib/reservations";
 import { getRoomPrices, updateRoomPrice, RoomPricing } from "@/lib/roomPricing";
+import { getOffers, Offer } from "@/lib/offers";
+import AdminOffersTab from "@/components/AdminOffersTab";
 import { useToast } from "@/hooks/use-toast";
 
 const Admin = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [roomPrices, setRoomPrices] = useState<RoomPricing[]>([]);
   const [editedPrices, setEditedPrices] = useState<Record<string, string>>({});
+  const [offers, setOffers] = useState<Offer[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -42,7 +45,10 @@ const Admin = () => {
     const initial: Record<string, string> = {};
     prices.forEach(r => { initial[r.id] = r.price.toString(); });
     setEditedPrices(initial);
+    setOffers(getOffers());
   }, []);
+
+  const refreshOffers = () => setOffers(getOffers());
 
   const handleDelete = (id: string) => {
     deleteReservation(id);
@@ -126,6 +132,9 @@ const Admin = () => {
             </TabsTrigger>
             <TabsTrigger value="pricing" className="gap-2">
               <DollarSign className="w-4 h-4" /> Room Pricing
+            </TabsTrigger>
+            <TabsTrigger value="offers" className="gap-2">
+              <Tag className="w-4 h-4" /> Offers
             </TabsTrigger>
           </TabsList>
 
@@ -301,6 +310,10 @@ const Admin = () => {
                 <Save className="w-4 h-4" /> Save All Prices
               </Button>
             </div>
+          </TabsContent>
+
+          <TabsContent value="offers">
+            <AdminOffersTab offers={offers} onRefresh={refreshOffers} />
           </TabsContent>
         </Tabs>
       </main>

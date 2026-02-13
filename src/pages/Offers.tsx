@@ -1,20 +1,17 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import offerExtendedStay from "@/assets/offer-extended-stay.jpg";
-
-const offers = [
-  {
-    title: "Extended Stay Retreat",
-    subtitle: "Stay 5 nights, pay for 4",
-    description: "Extend your sanctuary escape with complimentary nights and exclusive amenities including daily spa credits and private dining experiences.",
-    image: offerExtendedStay,
-    validUntil: "March 31, 2025",
-    terms: "Subject to availability. Blackout dates apply.",
-  },
-];
+import { getOffers, Offer } from "@/lib/offers";
 
 const Offers = () => {
+  const [offers, setOffers] = useState<Offer[]>([]);
+
+  useEffect(() => {
+    setOffers(getOffers());
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -42,7 +39,7 @@ const Offers = () => {
           <div className="max-w-[1800px] mx-auto space-y-20">
             {offers.map((offer, index) => (
               <motion.div
-                key={offer.title}
+                key={offer.id}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
@@ -52,7 +49,7 @@ const Offers = () => {
                 <div className={index % 2 === 1 ? "lg:order-2" : ""}>
                   <div className="aspect-[4/3] overflow-hidden">
                     <img
-                      src={offer.image}
+                      src={offer.imageUrl || offerExtendedStay}
                       alt={offer.title}
                       className="w-full h-full object-cover"
                     />
@@ -68,11 +65,15 @@ const Offers = () => {
                   <p className="luxury-body text-muted-foreground mb-6">
                     {offer.description}
                   </p>
-                  <div className="mb-6 pb-6 border-b border-foreground/10">
-                    <span className="luxury-subheading text-muted-foreground block mb-1">Valid Until</span>
-                    <span className="font-serif">{offer.validUntil}</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-8">{offer.terms}</p>
+                  {offer.validUntil && (
+                    <div className="mb-6 pb-6 border-b border-foreground/10">
+                      <span className="luxury-subheading text-muted-foreground block mb-1">Valid Until</span>
+                      <span className="font-serif">{offer.validUntil}</span>
+                    </div>
+                  )}
+                  {offer.terms && (
+                    <p className="text-sm text-muted-foreground mb-8">{offer.terms}</p>
+                  )}
                   <button className="luxury-subheading px-8 py-4 border border-foreground hover:bg-foreground hover:text-background transition-all duration-300">
                     Book This Offer
                   </button>
