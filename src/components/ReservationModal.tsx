@@ -32,6 +32,7 @@ interface ReservationModalProps {
   isOpen: boolean;
   onClose: () => void;
   preSelectedRoom?: string;
+  autoPromo?: { code: string; discountPercent: number; description: string } | null;
 }
 
 const roomImages: Record<string, string> = {
@@ -69,7 +70,7 @@ const guestFormSchema = z.object({
 
 type GuestFormData = z.infer<typeof guestFormSchema>;
 
-const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModalProps) => {
+const ReservationModal = ({ isOpen, onClose, preSelectedRoom, autoPromo }: ReservationModalProps) => {
   const rooms = getRooms();
   const [step, setStep] = useState(1);
   const [checkIn, setCheckIn] = useState<Date>();
@@ -103,7 +104,11 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
     if (isOpen && preSelectedRoom) {
       setSelectedRooms(prev => ({ ...prev, [preSelectedRoom]: Math.max(prev[preSelectedRoom] || 0, 1) }));
     }
-  }, [isOpen, preSelectedRoom]);
+    if (isOpen && autoPromo) {
+      setAppliedPromo(autoPromo);
+      setPromoCode(autoPromo.code);
+    }
+  }, [isOpen, preSelectedRoom, autoPromo]);
 
   const toggleRoom = (roomId: string) => {
     setSelectedRooms(prev => {

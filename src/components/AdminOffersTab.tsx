@@ -22,7 +22,7 @@ interface AdminOffersTabProps {
   onRefresh: () => void;
 }
 
-const emptyForm = { title: "", subtitle: "", description: "", imageUrl: "", validUntil: "", terms: "" };
+const emptyForm = { title: "", subtitle: "", description: "", imageUrl: "", validUntil: "", terms: "", promoCode: "", promoDiscount: "" };
 
 const AdminOffersTab = ({ offers, onRefresh }: AdminOffersTabProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -45,6 +45,8 @@ const AdminOffersTab = ({ offers, onRefresh }: AdminOffersTabProps) => {
       imageUrl: offer.imageUrl,
       validUntil: offer.validUntil,
       terms: offer.terms,
+      promoCode: offer.promoCode || "",
+      promoDiscount: offer.promoDiscount ? String(offer.promoDiscount) : "",
     });
     setDialogOpen(true);
   };
@@ -54,11 +56,16 @@ const AdminOffersTab = ({ offers, onRefresh }: AdminOffersTabProps) => {
       toast({ title: "Title is required", variant: "destructive" });
       return;
     }
+    const payload = {
+      ...form,
+      promoDiscount: form.promoDiscount ? Number(form.promoDiscount) : undefined,
+      promoCode: form.promoCode.trim().toUpperCase() || undefined,
+    };
     if (editingId) {
-      updateOffer(editingId, form);
+      updateOffer(editingId, payload);
       toast({ title: "Offer updated" });
     } else {
-      addOffer(form);
+      addOffer(payload as Omit<Offer, 'id'>);
       toast({ title: "Offer added" });
     }
     setDialogOpen(false);
@@ -96,6 +103,8 @@ const AdminOffersTab = ({ offers, onRefresh }: AdminOffersTabProps) => {
               <TableRow className="bg-muted/50">
                 <TableHead>Title</TableHead>
                 <TableHead>Subtitle</TableHead>
+                <TableHead>Promo Code</TableHead>
+                <TableHead>Discount</TableHead>
                 <TableHead>Valid Until</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -105,6 +114,8 @@ const AdminOffersTab = ({ offers, onRefresh }: AdminOffersTabProps) => {
                 <TableRow key={offer.id}>
                   <TableCell className="font-medium">{offer.title}</TableCell>
                   <TableCell className="text-muted-foreground">{offer.subtitle}</TableCell>
+                  <TableCell className="font-mono text-sm">{offer.promoCode || "—"}</TableCell>
+                  <TableCell className="text-muted-foreground">{offer.promoDiscount ? `${offer.promoDiscount}%` : "—"}</TableCell>
                   <TableCell className="text-muted-foreground">{offer.validUntil || "—"}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-2">
@@ -160,6 +171,16 @@ const AdminOffersTab = ({ offers, onRefresh }: AdminOffersTabProps) => {
             <div>
               <Label htmlFor="imageUrl">Image URL</Label>
               <Input id="imageUrl" value={form.imageUrl} onChange={e => updateField("imageUrl", e.target.value)} placeholder="https://..." />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="promoCode">Promo Code</Label>
+                <Input id="promoCode" value={form.promoCode} onChange={e => updateField("promoCode", e.target.value.toUpperCase())} placeholder="e.g. SUMMER20" className="font-mono" />
+              </div>
+              <div>
+                <Label htmlFor="promoDiscount">Discount %</Label>
+                <Input id="promoDiscount" type="number" min="0" max="100" value={form.promoDiscount} onChange={e => updateField("promoDiscount", e.target.value)} placeholder="e.g. 20" />
+              </div>
             </div>
             <div>
               <Label htmlFor="validUntil">Valid Until</Label>
