@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import tokyoInterior from "@/assets/tokyo-interior.jpg";
-import beachCasita from "@/assets/beach-casita.jpg";
-import coastalPool from "@/assets/coastal-pool.jpg";
+import diningMainRestaurant from "@/assets/dining-main-restaurant.jpg";
+import diningWellnessCafe from "@/assets/dining-wellness-cafe.jpg";
+import diningPrivate from "@/assets/dining-private.jpg";
 
 const restaurants = [
   {
@@ -15,7 +15,7 @@ const restaurants = [
       "Modern reinterpretations of classic Sri Lankan dishes",
       "Fresh seafood and organic garden harvests",
     ],
-    image: beachCasita,
+    image: diningMainRestaurant,
   },
   {
     name: "Wellness Café",
@@ -26,7 +26,7 @@ const restaurants = [
       "Fresh salads, smoothie bowls, and vegan entrées",
       "Locally grown organic ingredients",
     ],
-    image: tokyoInterior,
+    image: diningWellnessCafe,
   },
   {
     name: "Private Dining",
@@ -37,7 +37,7 @@ const restaurants = [
       "In-villa breakfast on private decks",
       "Custom tasting menus paired with fine wines",
     ],
-    image: coastalPool,
+    image: diningPrivate,
   },
 ];
 
