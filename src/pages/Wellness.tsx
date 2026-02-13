@@ -1,24 +1,31 @@
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import coastalPool from "@/assets/coastal-pool.jpg";
-import heroReflectionPool from "@/assets/hero-reflection-pool.jpg";
+import wellnessHero from "@/assets/wellness-hero.jpg";
+import wellnessPhilosophy from "@/assets/wellness-philosophy.jpg";
+import wellnessRebalance from "@/assets/wellness-rebalance.jpg";
+import wellnessRevival from "@/assets/wellness-revival.jpg";
+import wellnessDetox from "@/assets/wellness-detox.jpg";
+import wellnessPavilion from "@/assets/wellness-pavilion.jpg";
 
 const rituals = [
   {
     name: "Aara Rebalance",
     focus: "Realigning energy flow and releasing tension.",
     process: "Warm oil head massage, herbal body compress, guided breathing, and aromatic tea ritual.",
+    image: wellnessRebalance,
   },
   {
     name: "Herbal Revival",
     focus: "Rejuvenation and inner glow.",
     process: "Organic rice and sandalwood scrub exfoliation, warm oil therapy, and a turmeric and rose essence facial.",
+    image: wellnessRevival,
   },
   {
     name: "Forest Detox",
     focus: "Deep cleansing using forest purity.",
     process: "Steam therapy (lemongrass/eucalyptus), green tea and herbal oil detox massage, and an open-sky shower.",
+    image: wellnessDetox,
   },
 ];
 
@@ -56,7 +63,7 @@ const Wellness = () => {
               className="aspect-[21/9] overflow-hidden"
             >
               <img
-                src={heroReflectionPool}
+                src={wellnessHero}
                 alt="Wellness spa surrounded by nature"
                 className="w-full h-full object-cover"
               />
@@ -96,7 +103,7 @@ const Wellness = () => {
                 className="aspect-[4/5] overflow-hidden"
               >
                 <img
-                  src={coastalPool}
+                  src={wellnessPhilosophy}
                   alt="Ayurvedic wellness space"
                   className="w-full h-full object-cover"
                 />
@@ -134,11 +141,20 @@ const Wellness = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.15, duration: 0.6 }}
                   viewport={{ once: true }}
-                  className="p-8 border border-foreground/10 hover:border-foreground/30 transition-colors duration-300"
+                  className="border border-foreground/10 hover:border-foreground/30 transition-colors duration-300 overflow-hidden"
                 >
-                  <h3 className="text-xl font-serif tracking-luxury mb-3">{ritual.name}</h3>
-                  <p className="luxury-subheading text-muted-foreground mb-4">{ritual.focus}</p>
-                  <p className="luxury-body text-muted-foreground">{ritual.process}</p>
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img
+                      src={ritual.image}
+                      alt={ritual.name}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                  <div className="p-8">
+                    <h3 className="text-xl font-serif tracking-luxury mb-3">{ritual.name}</h3>
+                    <p className="luxury-subheading text-muted-foreground mb-4">{ritual.focus}</p>
+                    <p className="luxury-body text-muted-foreground">{ritual.process}</p>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -146,24 +162,40 @@ const Wellness = () => {
         </section>
 
         {/* The Wellness Pavilion */}
-        <section className="px-6 lg:px-12 py-20 bg-secondary/30 mb-24">
-          <div className="max-w-[1800px] mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <p className="luxury-subheading text-muted-foreground mb-4">FACILITIES</p>
-              <h2 className="text-3xl md:text-4xl font-serif tracking-luxury mb-6">
-                The Wellness Pavilion
-              </h2>
-              <p className="luxury-body text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
-                Designed to immerse guests in nature while providing refined relaxation.
-                Open-air treatment rooms, forest-view meditation decks, and herbal steam chambers
-                create a sanctuary where healing happens effortlessly.
-              </p>
-            </motion.div>
+        <section className="px-6 lg:px-12 mb-24">
+          <div className="max-w-[1800px] mx-auto">
+            <div className="grid lg:grid-cols-2 gap-0">
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 1 }}
+                viewport={{ once: true }}
+                className="aspect-[16/10] overflow-hidden"
+              >
+                <img
+                  src={wellnessPavilion}
+                  alt="The Wellness Pavilion"
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className="flex flex-col justify-center p-12 lg:p-16 bg-secondary/30"
+              >
+                <p className="luxury-subheading text-muted-foreground mb-4">FACILITIES</p>
+                <h2 className="text-3xl md:text-4xl font-serif tracking-luxury mb-6">
+                  The Wellness Pavilion
+                </h2>
+                <p className="luxury-body text-muted-foreground leading-relaxed">
+                  Designed to immerse guests in nature while providing refined relaxation.
+                  Open-air treatment rooms, forest-view meditation decks, and herbal steam chambers
+                  create a sanctuary where healing happens effortlessly.
+                </p>
+              </motion.div>
+            </div>
           </div>
         </section>
 
