@@ -19,6 +19,7 @@ const Header = () => {
   }, []);
 
   const menuItems = [
+    { label: "Home", href: "/" },
     { label: "Gallery", href: "/gallery" },
     { label: "Accommodation", href: "/accommodation" },
     { label: "Experiences", href: "/experiences" },
