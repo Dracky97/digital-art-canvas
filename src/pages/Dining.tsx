@@ -7,25 +7,37 @@ import coastalPool from "@/assets/coastal-pool.jpg";
 
 const restaurants = [
   {
-    name: "The Terrace",
-    cuisine: "Contemporary Asian",
-    description: "An open-air dining experience featuring the finest local ingredients prepared with innovative techniques. Watch the sunset as our chefs craft culinary masterpieces.",
+    name: "Main Restaurant",
+    cuisine: "The Essence of Flavor",
+    description: "Contemporary twist on traditional Sri Lankan and international cuisine. Panoramic views of forest and lake.",
+    highlights: [
+      "Breakfast with tropical fruits and Ceylon tea",
+      "Modern reinterpretations of classic Sri Lankan dishes",
+      "Fresh seafood and organic garden harvests",
+    ],
     image: beachCasita,
-    hours: "7:00 AM - 11:00 PM",
   },
   {
-    name: "Saffron",
-    cuisine: "Fine Dining",
-    description: "Our signature restaurant offers a multi-course tasting menu that celebrates the intersection of tradition and modernity. Each dish tells a story.",
+    name: "Wellness Café",
+    cuisine: "Nourishment with Intention",
+    description: "Serene garden corner offering plant-based, organic, and Ayurvedic-inspired dishes.",
+    highlights: [
+      "Cold-pressed juices and herbal elixirs",
+      "Fresh salads, smoothie bowls, and vegan entrées",
+      "Locally grown organic ingredients",
+    ],
     image: tokyoInterior,
-    hours: "6:30 PM - 10:30 PM",
   },
   {
-    name: "The Pool Bar",
-    cuisine: "Light Fare & Cocktails",
-    description: "Refreshing beverages and light cuisine served poolside. From fresh-pressed juices to artisanal cocktails crafted by our mixologists.",
+    name: "Private Dining",
+    cuisine: "Intimate & Inspired",
+    description: "Bespoke experiences including candlelit lakeside dinners and in-villa meals.",
+    highlights: [
+      "Romantic lakeside dining under lantern light",
+      "In-villa breakfast on private decks",
+      "Custom tasting menus paired with fine wines",
+    ],
     image: coastalPool,
-    hours: "10:00 AM - Sunset",
   },
 ];
 
@@ -80,16 +92,20 @@ const Dining = () => {
                   <h2 className="text-3xl md:text-4xl font-serif tracking-luxury mb-6">
                     {restaurant.name}
                   </h2>
-                  <p className="luxury-body text-muted-foreground mb-8">
+                  <p className="luxury-body text-muted-foreground mb-6">
                     {restaurant.description}
                   </p>
                   <div className="mb-8">
-                    <span className="luxury-subheading text-muted-foreground block mb-1">Hours</span>
-                    <span className="font-serif text-lg">{restaurant.hours}</span>
+                    <span className="luxury-subheading text-muted-foreground block mb-3">Signature Highlights</span>
+                    <ul className="space-y-2">
+                      {restaurant.highlights.map((highlight) => (
+                        <li key={highlight} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <span className="w-1 h-1 rounded-full bg-foreground mt-2 flex-shrink-0" />
+                          {highlight}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <button className="luxury-subheading px-8 py-4 border border-foreground hover:bg-foreground hover:text-background transition-all duration-300">
-                    Reserve a Table
-                  </button>
                 </div>
               </motion.div>
             ))}
@@ -105,16 +121,14 @@ const Dining = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
+              <span className="luxury-subheading text-muted-foreground mb-4 block">Rooted in Sustainability</span>
               <h2 className="text-3xl md:text-4xl font-serif tracking-luxury mb-6">
-                Private Dining
+                Farm-to-Table Philosophy
               </h2>
               <p className="luxury-body text-muted-foreground max-w-2xl mx-auto mb-8">
-                For intimate celebrations or exclusive gatherings, our private dining experiences 
-                offer bespoke menus crafted to your preferences in stunning locations.
+                Ingredients sourced directly from local organic farms, nearby villages, and on-site gardens. 
+                Every flavor tells a story of care, culture, and connection to nature.
               </p>
-              <button className="luxury-subheading px-8 py-4 border border-foreground hover:bg-foreground hover:text-background transition-all duration-300">
-                Inquire Now
-              </button>
             </motion.div>
           </div>
         </section>
