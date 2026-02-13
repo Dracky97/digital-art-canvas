@@ -36,7 +36,7 @@ const AlchemySection = () => {
             viewport={{ once: true }}
             className="luxury-subheading mb-4 text-primary-foreground/80"
           >
-            WELLNESS
+            WELLNESS & SPA
           </motion.p>
           <motion.h2
             initial={{ opacity: 0, x: -30 }}
@@ -45,18 +45,26 @@ const AlchemySection = () => {
             viewport={{ once: true }}
             className="text-4xl lg:text-6xl font-serif tracking-luxury mb-6 text-primary-foreground"
           >
-            The Alchemy of AaraWild
+            Inspired by Ayurveda & Nature
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.7, duration: 0.6 }}
             viewport={{ once: true }}
-            className="luxury-body text-primary-foreground/90 mb-8"
+            className="luxury-body text-primary-foreground/90 mb-3"
           >
-            Drawing on centuries of traditional wisdom and cutting-edge science,
-            AaraWild's holistic approach to wellness transcends the ordinary,
-            offering pathways to profound transformation.
+            A journey of rediscovery guided by nature's wisdom. At Aara, we don't just
+            treat the body — we nurture the soul.
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            viewport={{ once: true }}
+            className="luxury-body text-primary-foreground/70 italic mb-8"
+          >
+            "Healing begins when you slow down enough to listen to nature."
           </motion.p>
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -68,7 +76,7 @@ const AlchemySection = () => {
               to="/wellness"
               className="luxury-link text-primary-foreground after:bg-primary-foreground"
             >
-              Discover More
+              Discover Our Rituals
             </Link>
           </motion.div>
         </div>
