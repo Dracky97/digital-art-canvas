@@ -1,21 +1,42 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, Search, X } from "lucide-react";
+import { Menu, Search, X, Globe } from "lucide-react";
 import { Link } from "react-router-dom";
 import ReservationModal from "./ReservationModal";
 import aarawildLogo from "@/assets/aarawild-logo.png";
+
+const languages = [
+  { code: "en", label: "English" },
+  { code: "fr", label: "Français" },
+  { code: "es", label: "Español" },
+  { code: "de", label: "Deutsch" },
+  { code: "zh", label: "中文" },
+  { code: "ja", label: "日本語" },
+  { code: "ar", label: "العربية" },
+];
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isReservationOpen, setIsReservationOpen] = useState(false);
+  const [currentLang, setCurrentLang] = useState("en");
+  const [isLangOpen, setIsLangOpen] = useState(false);
+  const langRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setIsLangOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const menuItems = [
@@ -61,9 +82,41 @@ const Header = () => {
 
           {/* Right Navigation */}
           <div className="flex items-center gap-2 sm:gap-6 flex-shrink-0">
-            <span className="luxury-subheading hidden lg:block cursor-pointer hover:opacity-70 transition-opacity">
-              English
-            </span>
+            <div className="relative hidden lg:block" ref={langRef}>
+              <button
+                onClick={() => setIsLangOpen(!isLangOpen)}
+                className="flex items-center gap-2 luxury-subheading cursor-pointer hover:opacity-70 transition-opacity"
+              >
+                <Globe className="w-4 h-4" />
+                {languages.find((l) => l.code === currentLang)?.label}
+              </button>
+              <AnimatePresence>
+                {isLangOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 top-full mt-3 min-w-[160px] bg-background border border-foreground/10 shadow-lg py-2"
+                  >
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => {
+                          setCurrentLang(lang.code);
+                          setIsLangOpen(false);
+                        }}
+                        className={`block w-full text-left px-5 py-2.5 luxury-subheading transition-colors duration-200 hover:bg-foreground/5 ${
+                          currentLang === lang.code ? "text-foreground" : "text-muted-foreground"
+                        }`}
+                      >
+                        {lang.label}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
             <button 
               onClick={() => setIsReservationOpen(true)}
               className="luxury-subheading px-3 py-2 sm:px-6 sm:py-3 text-[10px] sm:text-xs border border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
