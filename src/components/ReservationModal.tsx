@@ -19,6 +19,8 @@ import { stripePromise } from "@/lib/stripe";
 import PaymentStep from "@/components/PaymentStep";
 import { saveReservation } from "@/lib/reservations";
 import { getRoomPrices } from "@/lib/roomPricing";
+import { validatePromoCode } from "@/lib/promoCodes";
+import { Tag } from "lucide-react";
 
 import indiaWilderness from "@/assets/india-wilderness.jpg";
 import skiMountains from "@/assets/ski-mountains.jpg";
@@ -79,6 +81,9 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
   const [isProcessing, setIsProcessing] = useState(false);
   const [checkInOpen, setCheckInOpen] = useState(false);
   const [checkOutOpen, setCheckOutOpen] = useState(false);
+  const [promoCode, setPromoCode] = useState("");
+  const [appliedPromo, setAppliedPromo] = useState<{ code: string; discountPercent: number; description: string } | null>(null);
+  const [promoError, setPromoError] = useState("");
   const { toast } = useToast();
 
   const handleClose = () => {
@@ -87,6 +92,9 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
     setCheckOut(undefined);
     setSelectedRooms({});
     setGuests({ adults: 2, children: 0 });
+    setPromoCode("");
+    setAppliedPromo(null);
+    setPromoError("");
     form.reset();
     onClose();
   };
@@ -199,10 +207,30 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
   };
 
   const nights = checkIn && checkOut ? Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)) : 0;
-  const totalPrice = Object.entries(selectedRooms).reduce((sum, [roomId, qty]) => {
+  const subtotal = Object.entries(selectedRooms).reduce((sum, [roomId, qty]) => {
     const room = rooms.find(r => r.id === roomId);
     return sum + (room?.price || 0) * qty * nights;
   }, 0);
+  const discountAmount = appliedPromo ? Math.round(subtotal * appliedPromo.discountPercent / 100) : 0;
+  const totalPrice = subtotal - discountAmount;
+
+  const handleApplyPromo = () => {
+    setPromoError("");
+    const result = validatePromoCode(promoCode);
+    if (result) {
+      setAppliedPromo(result);
+      toast({ title: `Promo code applied! ${result.description}` });
+    } else {
+      setPromoError("Invalid promo code");
+      setAppliedPromo(null);
+    }
+  };
+
+  const handleRemovePromo = () => {
+    setAppliedPromo(null);
+    setPromoCode("");
+    setPromoError("");
+  };
 
   const stepVariants = {
     enter: { opacity: 0, x: 20 },
@@ -591,11 +619,65 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
                       <span className="text-muted-foreground">Nights</span>
                       <span>{nights}</span>
                     </div>
-                    <div className="border-t border-border pt-3 flex justify-between font-medium">
-                      <span>Total</span>
-                      <span>${totalPrice.toLocaleString()}</span>
+                    <div className="border-t border-border pt-3 space-y-2">
+                      {appliedPromo && (
+                        <>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">Subtotal</span>
+                            <span>${subtotal.toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between text-sm text-primary">
+                            <span>Discount ({appliedPromo.discountPercent}% — {appliedPromo.code})</span>
+                            <span>-${discountAmount.toLocaleString()}</span>
+                          </div>
+                        </>
+                      )}
+                      <div className="flex justify-between font-medium">
+                        <span>Total</span>
+                        <span>${totalPrice.toLocaleString()}</span>
+                      </div>
                     </div>
                   </div>
+                </div>
+
+                {/* Promo Code */}
+                <div className="bg-muted/30 rounded-lg p-6 space-y-3">
+                  <h3 className="font-serif text-lg flex items-center gap-2">
+                    <Tag className="w-4 h-4" />
+                    Promo Code
+                  </h3>
+                  {appliedPromo ? (
+                    <div className="flex items-center justify-between p-3 border border-primary/30 bg-primary/5 rounded-lg">
+                      <div>
+                        <span className="font-medium text-sm">{appliedPromo.code}</span>
+                        <span className="text-sm text-muted-foreground ml-2">— {appliedPromo.description}</span>
+                      </div>
+                      <button
+                        onClick={handleRemovePromo}
+                        className="text-xs text-muted-foreground hover:text-foreground underline"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Enter promo code"
+                        value={promoCode}
+                        onChange={(e) => { setPromoCode(e.target.value); setPromoError(""); }}
+                        className="h-10 uppercase"
+                      />
+                      <Button
+                        onClick={handleApplyPromo}
+                        variant="outline"
+                        className="shrink-0"
+                        disabled={!promoCode.trim()}
+                      >
+                        Apply
+                      </Button>
+                    </div>
+                  )}
+                  {promoError && <p className="text-sm text-destructive">{promoError}</p>}
                 </div>
 
                 <div className="bg-muted/30 rounded-lg p-6 space-y-3">
