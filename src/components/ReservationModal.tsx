@@ -384,7 +384,7 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
                 transition={{ duration: 0.3 }}
                 className="space-y-4"
               >
-                <p className="text-sm text-muted-foreground mb-4">Select one or more room types and choose the quantity for each.</p>
+                <p className="text-sm text-muted-foreground mb-4">Use the + button to add rooms to your reservation.</p>
                 <div className="space-y-3 max-h-[360px] overflow-y-auto pr-1">
                   {rooms.map((room) => {
                     const isSelected = (selectedRooms[room.id] || 0) > 0;
@@ -393,12 +393,11 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
                       <div
                         key={room.id}
                         className={cn(
-                          "flex gap-4 rounded-lg border-2 p-3 transition-all cursor-pointer",
+                          "flex gap-4 rounded-lg border-2 p-3 transition-all",
                           isSelected
                             ? "border-foreground bg-muted/40"
-                            : "border-border hover:border-muted-foreground/40"
+                            : "border-border"
                         )}
-                        onClick={() => !isSelected && toggleRoom(room.id)}
                       >
                         {/* Thumbnail */}
                         <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-md overflow-hidden flex-shrink-0">
@@ -430,25 +429,22 @@ const ReservationModal = ({ isOpen, onClose, preSelectedRoom }: ReservationModal
                           </div>
                           <div className="flex items-center justify-between mt-2">
                             <span className="font-serif text-sm font-medium">${room.price}<span className="text-muted-foreground text-xs font-sans">/night</span></span>
-                            {isSelected ? (
-                              <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
-                                <button
-                                  onClick={() => updateRoomQuantity(room.id, -1)}
-                                  className="w-7 h-7 border border-border rounded-full flex items-center justify-center hover:bg-muted transition-colors"
-                                >
-                                  <Minus className="w-3 h-3" />
-                                </button>
-                                <span className="w-5 text-center text-sm font-medium">{qty}</span>
-                                <button
-                                  onClick={() => updateRoomQuantity(room.id, 1)}
-                                  className="w-7 h-7 border border-border rounded-full flex items-center justify-center hover:bg-muted transition-colors"
-                                >
-                                  <Plus className="w-3 h-3" />
-                                </button>
-                              </div>
-                            ) : (
-                              <span className="text-xs text-muted-foreground">Click to select</span>
-                            )}
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => updateRoomQuantity(room.id, -1)}
+                                disabled={qty === 0}
+                                className="w-7 h-7 border border-border rounded-full flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                              >
+                                <Minus className="w-3 h-3" />
+                              </button>
+                              <span className="w-5 text-center text-sm font-medium">{qty}</span>
+                              <button
+                                onClick={() => updateRoomQuantity(room.id, 1)}
+                                className="w-7 h-7 border border-border rounded-full flex items-center justify-center hover:bg-muted transition-colors"
+                              >
+                                <Plus className="w-3 h-3" />
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
