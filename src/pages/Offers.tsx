@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ReservationModal from "@/components/ReservationModal";
 import offerExtendedStay from "@/assets/offer-extended-stay.jpg";
 import { getOffers, Offer } from "@/lib/offers";
 
 const Offers = () => {
   const [offers, setOffers] = useState<Offer[]>([]);
+  const [isReservationOpen, setIsReservationOpen] = useState(false);
 
   useEffect(() => {
     setOffers(getOffers());
@@ -74,7 +76,10 @@ const Offers = () => {
                   {offer.terms && (
                     <p className="text-sm text-muted-foreground mb-8">{offer.terms}</p>
                   )}
-                  <button className="luxury-subheading px-8 py-4 border border-foreground hover:bg-foreground hover:text-background transition-all duration-300">
+                  <button
+                    onClick={() => setIsReservationOpen(true)}
+                    className="luxury-subheading px-8 py-4 border border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
+                  >
                     Book This Offer
                   </button>
                 </div>
@@ -107,6 +112,7 @@ const Offers = () => {
         </section>
       </main>
       <Footer />
+      <ReservationModal isOpen={isReservationOpen} onClose={() => setIsReservationOpen(false)} />
     </div>
   );
 };
