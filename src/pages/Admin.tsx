@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
-import { Calendar, Users, Home, Mail, Phone, Trash2, ArrowLeft, DollarSign, Save, Tag } from "lucide-react";
+import { Calendar, Users, Home, Mail, Phone, Trash2, ArrowLeft, DollarSign, Save, Tag, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import AdminLogin, { isAdminAuthenticated, adminLogout } from "@/components/AdminLogin";
 import {
   Table,
   TableBody,
@@ -32,6 +33,7 @@ import AdminOffersTab from "@/components/AdminOffersTab";
 import { useToast } from "@/hooks/use-toast";
 
 const Admin = () => {
+  const [authenticated, setAuthenticated] = useState(isAdminAuthenticated());
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [roomPrices, setRoomPrices] = useState<RoomPricing[]>([]);
   const [editedPrices, setEditedPrices] = useState<Record<string, string>>({});
@@ -39,6 +41,7 @@ const Admin = () => {
   const { toast } = useToast();
 
   useEffect(() => {
+    if (!authenticated) return;
     setReservations(getReservations());
     const prices = getRoomPrices();
     setRoomPrices(prices);
@@ -46,7 +49,16 @@ const Admin = () => {
     prices.forEach(r => { initial[r.id] = r.price.toString(); });
     setEditedPrices(initial);
     setOffers(getOffers());
-  }, []);
+  }, [authenticated]);
+
+  if (!authenticated) {
+    return <AdminLogin onAuthenticated={() => setAuthenticated(true)} />;
+  }
+
+  const handleLogout = () => {
+    adminLogout();
+    setAuthenticated(false);
+  };
 
   const refreshOffers = () => setOffers(getOffers());
 
@@ -117,9 +129,14 @@ const Admin = () => {
               <p className="text-sm text-muted-foreground">Manage reservations & pricing</p>
             </div>
           </div>
-          <Badge variant="outline" className="text-xs">
-            {reservations.length} Total Reservations
-          </Badge>
+          <div className="flex items-center gap-3">
+            <Badge variant="outline" className="text-xs">
+              {reservations.length} Total Reservations
+            </Badge>
+            <Button variant="outline" size="sm" onClick={handleLogout} className="gap-1">
+              <LogOut className="w-4 h-4" /> Logout
+            </Button>
+          </div>
         </div>
       </header>
 
