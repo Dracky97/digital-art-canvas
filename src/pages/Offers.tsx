@@ -9,6 +9,7 @@ import { getOffers, Offer } from "@/lib/offers";
 const Offers = () => {
   const [offers, setOffers] = useState<Offer[]>([]);
   const [isReservationOpen, setIsReservationOpen] = useState(false);
+  const [activePromo, setActivePromo] = useState<{ code: string; discountPercent: number; description: string } | null>(null);
 
   useEffect(() => {
     setOffers(getOffers());
@@ -73,11 +74,25 @@ const Offers = () => {
                       <span className="font-serif">{offer.validUntil}</span>
                     </div>
                   )}
+                  {offer.promoCode && offer.promoDiscount && (
+                    <div className="mb-6 pb-6 border-b border-foreground/10">
+                      <span className="luxury-subheading text-muted-foreground block mb-1">Promo Code</span>
+                      <span className="font-mono font-medium tracking-wider">{offer.promoCode}</span>
+                      <span className="text-sm text-muted-foreground ml-2">({offer.promoDiscount}% off)</span>
+                    </div>
+                  )}
                   {offer.terms && (
                     <p className="text-sm text-muted-foreground mb-8">{offer.terms}</p>
                   )}
                   <button
-                    onClick={() => setIsReservationOpen(true)}
+                    onClick={() => {
+                      if (offer.promoCode && offer.promoDiscount) {
+                        setActivePromo({ code: offer.promoCode, discountPercent: offer.promoDiscount, description: `${offer.promoDiscount}% off — ${offer.title}` });
+                      } else {
+                        setActivePromo(null);
+                      }
+                      setIsReservationOpen(true);
+                    }}
                     className="luxury-subheading px-8 py-4 border border-foreground hover:bg-foreground hover:text-background transition-all duration-300"
                   >
                     Book This Offer
@@ -112,7 +127,7 @@ const Offers = () => {
         </section>
       </main>
       <Footer />
-      <ReservationModal isOpen={isReservationOpen} onClose={() => setIsReservationOpen(false)} />
+      <ReservationModal isOpen={isReservationOpen} onClose={() => { setIsReservationOpen(false); setActivePromo(null); }} autoPromo={activePromo} />
     </div>
   );
 };

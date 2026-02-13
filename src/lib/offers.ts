@@ -6,6 +6,8 @@ export interface Offer {
   imageUrl: string;
   validUntil: string;
   terms: string;
+  promoCode?: string;
+  promoDiscount?: number;
 }
 
 const STORAGE_KEY = 'offers_data';
