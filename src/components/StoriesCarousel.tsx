@@ -72,7 +72,7 @@ const StoriesCarousel = () => {
           viewport={{ once: true }}
           className="flex items-center justify-between mb-12"
         >
-          <h2 className="text-3xl lg:text-5xl font-serif tracking-luxury">
+          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-serif tracking-luxury">
             Stories
           </h2>
           <div className="flex items-center gap-4">

@@ -87,7 +87,7 @@ const AccommodationSection = () => {
           className="text-center mb-16 px-6 lg:px-12"
         >
           <p className="luxury-subheading text-muted-foreground mb-4">WHERE YOU'LL STAY</p>
-          <h2 className="text-3xl lg:text-5xl font-serif tracking-luxury">
+          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-serif tracking-luxury">
             Accommodation
           </h2>
         </motion.div>
@@ -126,7 +126,7 @@ const AccommodationSection = () => {
 
                       {/* Content */}
                       <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
-                        <p className="text-[10px] tracking-[0.3em] text-background/70 mb-2">
+                        <p className="text-xs tracking-[0.3em] text-background/70 mb-2">
                           {room.tagline.toUpperCase()}
                         </p>
                         <h3 className="text-xl lg:text-2xl font-serif tracking-luxury text-background mb-3">

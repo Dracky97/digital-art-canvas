@@ -38,7 +38,7 @@ const HeroVideo = () => {
         transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
         className="absolute inset-0 flex items-center justify-center"
       >
-        <h2 className="text-5xl lg:text-8xl font-serif tracking-luxury-wide text-primary-foreground drop-shadow-lg">
+        <h2 className="text-3xl sm:text-5xl lg:text-8xl font-serif tracking-luxury-wide text-primary-foreground drop-shadow-lg">
           AARAWILD
         </h2>
       </motion.div>
@@ -53,7 +53,7 @@ const HeroVideo = () => {
         <p className="luxury-subheading mb-2 text-primary-foreground/80">
           AARAWILD
         </p>
-        <h3 className="text-2xl lg:text-4xl font-serif tracking-wide mb-4">
+        <h3 className="text-xl sm:text-2xl lg:text-4xl font-serif tracking-wide mb-4">
           Opens for Reservations
         </h3>
         <Link

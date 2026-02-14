@@ -36,7 +36,7 @@ const Footer = () => {
             viewport={{ once: true }}
             className="lg:col-span-2"
           >
-            <h2 className="text-3xl lg:text-4xl font-serif tracking-luxury-wide mb-6">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif tracking-luxury-wide mb-6">
               ĀARAWILD
             </h2>
             <p className="luxury-body text-primary-foreground/70 max-w-sm">
