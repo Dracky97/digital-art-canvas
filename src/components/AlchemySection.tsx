@@ -43,7 +43,7 @@ const AlchemySection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-4xl lg:text-6xl font-serif tracking-luxury mb-6 text-primary-foreground"
+            className="text-2xl sm:text-4xl lg:text-6xl font-serif tracking-luxury mb-6 text-primary-foreground"
           >
             Inspired by Ayurveda & Nature
           </motion.h2>
@@ -52,7 +52,7 @@ const AlchemySection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.7, duration: 0.6 }}
             viewport={{ once: true }}
-            className="luxury-body text-primary-foreground/90 mb-3"
+            className="luxury-body text-primary-foreground/90 mb-3 text-sm sm:text-base"
           >
             A journey of rediscovery guided by nature's wisdom. At Aara, we don't just
             treat the body — we nurture the soul.
@@ -62,7 +62,7 @@ const AlchemySection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.8, duration: 0.6 }}
             viewport={{ once: true }}
-            className="luxury-body text-primary-foreground/70 italic mb-8"
+            className="luxury-body text-primary-foreground/70 italic mb-8 text-sm sm:text-base"
           >
             "Healing begins when you slow down enough to listen to nature."
           </motion.p>
