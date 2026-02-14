@@ -27,7 +27,7 @@ const Offers = () => {
             transition={{ duration: 0.8 }}
             className="max-w-[1800px] mx-auto"
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif tracking-luxury mb-6">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif tracking-luxury mb-6">
               Exclusive Offers
             </h1>
             <p className="luxury-body text-muted-foreground max-w-2xl">
@@ -112,7 +112,7 @@ const Offers = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-serif tracking-luxury mb-6">
+               <h2 className="text-2xl sm:text-3xl font-serif tracking-luxury mb-6">
                 Be the First to Know
               </h2>
               <p className="luxury-body text-muted-foreground max-w-2xl mx-auto mb-8">
