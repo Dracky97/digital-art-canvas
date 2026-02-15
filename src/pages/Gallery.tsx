@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -10,6 +11,7 @@ import galleryInteriors from "@/assets/gallery-interiors.jpg";
 import amangiriDesert from "@/assets/amangiri-desert.jpg";
 import galleryDining from "@/assets/gallery-dining.jpg";
 import indiaWilderness from "@/assets/india-wilderness.jpg";
+import { getGalleryImages, GalleryImage } from "@/lib/gallery";
 
 const galleryImages = [
   { src: galleryArchitecture, alt: "Resort architecture at sunset", category: "Architecture" },
@@ -26,6 +28,23 @@ const galleryImages = [
 const categories = ["All", "Architecture", "Accommodation", "Wellness", "Experiences", "Destinations", "Interiors", "Dining"];
 
 const Gallery = () => {
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [customImages, setCustomImages] = useState<GalleryImage[]>([]);
+
+  useEffect(() => {
+    setCustomImages(getGalleryImages());
+  }, []);
+
+  const allImages = [
+    ...galleryImages,
+    ...customImages.map((img) => ({ src: img.src, alt: img.alt, category: img.category })),
+  ];
+
+  const filteredImages =
+    activeCategory === "All"
+      ? allImages
+      : allImages.filter((img) => img.category === activeCategory);
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -55,7 +74,12 @@ const Gallery = () => {
               {categories.map((category) => (
                 <button
                   key={category}
-                  className="luxury-subheading px-4 py-2 border border-foreground/20 hover:bg-foreground hover:text-background transition-all duration-300"
+                  onClick={() => setActiveCategory(category)}
+                  className={`luxury-subheading px-4 py-2 border transition-all duration-300 ${
+                    activeCategory === category
+                      ? "bg-foreground text-background border-foreground"
+                      : "border-foreground/20 hover:bg-foreground hover:text-background"
+                  }`}
                 >
                   {category}
                 </button>
@@ -68,7 +92,7 @@ const Gallery = () => {
         <section className="px-6 lg:px-12">
           <div className="max-w-[1800px] mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {galleryImages.map((image, index) => (
+              {filteredImages.map((image, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
