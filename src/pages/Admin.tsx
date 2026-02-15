@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
-import { Calendar, Users, Home, Mail, Phone, Trash2, ArrowLeft, DollarSign, Save, Tag, LogOut } from "lucide-react";
+import { Calendar, Users, Home, Mail, Phone, Trash2, ArrowLeft, DollarSign, Save, Tag, LogOut, ImageIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -29,7 +29,9 @@ import {
 import { getReservations, deleteReservation, updateReservationStatus, Reservation } from "@/lib/reservations";
 import { getRoomPrices, updateRoomPrice, RoomPricing } from "@/lib/roomPricing";
 import { getOffers, Offer } from "@/lib/offers";
+import { getGalleryImages, GalleryImage } from "@/lib/gallery";
 import AdminOffersTab from "@/components/AdminOffersTab";
+import AdminGalleryTab from "@/components/AdminGalleryTab";
 import { useToast } from "@/hooks/use-toast";
 
 const Admin = () => {
@@ -38,6 +40,7 @@ const Admin = () => {
   const [roomPrices, setRoomPrices] = useState<RoomPricing[]>([]);
   const [editedPrices, setEditedPrices] = useState<Record<string, string>>({});
   const [offers, setOffers] = useState<Offer[]>([]);
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -49,6 +52,7 @@ const Admin = () => {
     prices.forEach(r => { initial[r.id] = r.price.toString(); });
     setEditedPrices(initial);
     setOffers(getOffers());
+    setGalleryImages(getGalleryImages());
   }, [authenticated]);
 
   if (!authenticated) {
@@ -61,6 +65,7 @@ const Admin = () => {
   };
 
   const refreshOffers = () => setOffers(getOffers());
+  const refreshGallery = () => setGalleryImages(getGalleryImages());
 
   const handleDelete = (id: string) => {
     deleteReservation(id);
@@ -152,6 +157,9 @@ const Admin = () => {
             </TabsTrigger>
             <TabsTrigger value="offers" className="gap-2">
               <Tag className="w-4 h-4" /> Offers
+            </TabsTrigger>
+            <TabsTrigger value="gallery" className="gap-2">
+              <ImageIcon className="w-4 h-4" /> Gallery
             </TabsTrigger>
           </TabsList>
 
@@ -331,6 +339,10 @@ const Admin = () => {
 
           <TabsContent value="offers">
             <AdminOffersTab offers={offers} onRefresh={refreshOffers} />
+          </TabsContent>
+
+          <TabsContent value="gallery">
+            <AdminGalleryTab images={galleryImages} onRefresh={refreshGallery} />
           </TabsContent>
         </Tabs>
       </main>
