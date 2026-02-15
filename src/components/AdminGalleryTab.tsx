@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Plus, Trash2, ImageIcon } from "lucide-react";
+import { useState, useRef } from "react";
+import { Plus, Trash2, ImageIcon, Upload, Link as LinkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,9 +38,39 @@ interface AdminGalleryTabProps {
 
 const AdminGalleryTab = ({ images, onRefresh }: AdminGalleryTabProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [uploadMode, setUploadMode] = useState<"file" | "url">("file");
   const [form, setForm] = useState({ src: "", alt: "", category: "" });
+  const [preview, setPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const categories = getCategories();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Please select an image file", variant: "destructive" });
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "Image must be under 5MB", variant: "destructive" });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      setForm((p) => ({ ...p, src: dataUrl }));
+      setPreview(dataUrl);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const resetForm = () => {
+    setForm({ src: "", alt: "", category: "" });
+    setPreview(null);
+    setUploadMode("file");
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
 
   const handleAdd = () => {
     if (!form.src.trim()) {
@@ -57,7 +87,7 @@ const AdminGalleryTab = ({ images, onRefresh }: AdminGalleryTabProps) => {
       category: form.category,
     });
     toast({ title: "Photo added to gallery" });
-    setForm({ src: "", alt: "", category: "" });
+    resetForm();
     setDialogOpen(false);
     onRefresh();
   };
@@ -130,21 +160,72 @@ const AdminGalleryTab = ({ images, onRefresh }: AdminGalleryTabProps) => {
         </div>
       )}
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetForm(); }}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle>Add Photo to Gallery</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
-            <div>
-              <Label htmlFor="gallery-src">Image URL *</Label>
-              <Input
-                id="gallery-src"
-                value={form.src}
-                onChange={(e) => setForm((p) => ({ ...p, src: e.target.value }))}
-                placeholder="https://example.com/photo.jpg"
-              />
+            {/* Upload mode toggle */}
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant={uploadMode === "file" ? "default" : "outline"}
+                size="sm"
+                className="gap-2"
+                onClick={() => setUploadMode("file")}
+              >
+                <Upload className="w-4 h-4" /> Upload File
+              </Button>
+              <Button
+                type="button"
+                variant={uploadMode === "url" ? "default" : "outline"}
+                size="sm"
+                className="gap-2"
+                onClick={() => setUploadMode("url")}
+              >
+                <LinkIcon className="w-4 h-4" /> Paste URL
+              </Button>
             </div>
+
+            {uploadMode === "file" ? (
+              <div>
+                <Label htmlFor="gallery-file">Image File *</Label>
+                <div
+                  className="mt-1 border-2 border-dashed border-border rounded-lg p-6 text-center cursor-pointer hover:border-primary/50 transition-colors"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {preview ? (
+                    <img src={preview} alt="Preview" className="mx-auto max-h-40 rounded object-contain" />
+                  ) : (
+                    <>
+                      <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
+                      <p className="text-sm text-muted-foreground">Click to select an image</p>
+                      <p className="text-xs text-muted-foreground mt-1">JPG, PNG, WebP — max 5MB</p>
+                    </>
+                  )}
+                  <input
+                    ref={fileInputRef}
+                    id="gallery-file"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div>
+                <Label htmlFor="gallery-src">Image URL *</Label>
+                <Input
+                  id="gallery-src"
+                  value={form.src}
+                  onChange={(e) => setForm((p) => ({ ...p, src: e.target.value }))}
+                  placeholder="https://example.com/photo.jpg"
+                />
+              </div>
+            )}
+
             <div>
               <Label htmlFor="gallery-alt">Description</Label>
               <Input
@@ -171,7 +252,7 @@ const AdminGalleryTab = ({ images, onRefresh }: AdminGalleryTabProps) => {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => { setDialogOpen(false); resetForm(); }}>Cancel</Button>
             <Button onClick={handleAdd}>Add Photo</Button>
           </DialogFooter>
         </DialogContent>
