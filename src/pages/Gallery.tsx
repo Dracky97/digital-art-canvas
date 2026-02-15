@@ -2,48 +2,22 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import galleryArchitecture from "@/assets/gallery-architecture.jpg";
-import beachCasita from "@/assets/beach-casita.jpg";
-import galleryWellness from "@/assets/gallery-wellness.jpg";
-import galleryExperiences from "@/assets/gallery-experiences.jpg";
-import skiMountains from "@/assets/ski-mountains.jpg";
-import galleryInteriors from "@/assets/gallery-interiors.jpg";
-import amangiriDesert from "@/assets/amangiri-desert.jpg";
-import galleryDining from "@/assets/gallery-dining.jpg";
-import indiaWilderness from "@/assets/india-wilderness.jpg";
-import { getGalleryImages, GalleryImage } from "@/lib/gallery";
+import { getGalleryImages, GalleryImage, getCategories } from "@/lib/gallery";
 
-const galleryImages = [
-  { src: galleryArchitecture, alt: "Resort architecture at sunset", category: "Architecture" },
-  { src: beachCasita, alt: "Beachfront casita", category: "Accommodation" },
-  { src: galleryWellness, alt: "Spa treatment room", category: "Wellness" },
-  { src: galleryExperiences, alt: "Hot air balloon safari", category: "Experiences" },
-  { src: skiMountains, alt: "Mountain ski resort", category: "Destinations" },
-  { src: galleryInteriors, alt: "Luxury bedroom interior", category: "Interiors" },
-  { src: amangiriDesert, alt: "Desert landscape", category: "Destinations" },
-  { src: galleryDining, alt: "Oceanfront dining experience", category: "Dining" },
-  { src: indiaWilderness, alt: "Wilderness retreat", category: "Experiences" },
-];
-
-const categories = ["All", "Architecture", "Accommodation", "Wellness", "Experiences", "Destinations", "Interiors", "Dining"];
+const categories = ["All", ...getCategories()];
 
 const Gallery = () => {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [customImages, setCustomImages] = useState<GalleryImage[]>([]);
+  const [images, setImages] = useState<GalleryImage[]>([]);
 
   useEffect(() => {
-    setCustomImages(getGalleryImages());
+    setImages(getGalleryImages());
   }, []);
-
-  const allImages = [
-    ...galleryImages,
-    ...customImages.map((img) => ({ src: img.src, alt: img.alt, category: img.category })),
-  ];
 
   const filteredImages =
     activeCategory === "All"
-      ? allImages
-      : allImages.filter((img) => img.category === activeCategory);
+      ? images
+      : images.filter((img) => img.category === activeCategory);
 
   return (
     <div className="min-h-screen bg-background">
@@ -91,30 +65,40 @@ const Gallery = () => {
         {/* Gallery Grid */}
         <section className="px-6 lg:px-12">
           <div className="max-w-[1800px] mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredImages.map((image, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="group relative aspect-[4/3] overflow-hidden cursor-pointer"
-                >
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-500" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                    <span className="luxury-subheading text-primary-foreground bg-foreground/80 px-3 py-1">
-                      {image.category}
-                    </span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            {filteredImages.length === 0 ? (
+              <div className="text-center py-20">
+                <p className="text-muted-foreground">
+                  {images.length === 0
+                    ? "No photos in the gallery yet. Photos added by the admin will appear here."
+                    : "No photos in this category."}
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredImages.map((image, index) => (
+                  <motion.div
+                    key={image.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.6 }}
+                    viewport={{ once: true }}
+                    className="group relative aspect-[4/3] overflow-hidden cursor-pointer"
+                  >
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-500" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                      <span className="luxury-subheading text-primary-foreground bg-foreground/80 px-3 py-1">
+                        {image.category}
+                      </span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       </main>
